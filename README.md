@@ -1,0 +1,774 @@
+[digital-wellness (4).html](https://github.com/user-attachments/files/28854895/digital-wellness.4.html)
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Digital Wellness</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, 'Noto Sans KR', sans-serif; background: #f0eef8; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; }
+
+  .phone { width: 390px; min-height: 100vh; background: #f5f3fc; position: relative; overflow: hidden; }
+
+  /* NAV */
+  .nav { display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 390px; background: #fff; border-top: 1px solid #e8e4f5; display: flex; justify-content: space-around; padding: 10px 0 20px; z-index: 100; }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #aaa; cursor: pointer; padding: 4px 16px; border-radius: 10px; transition: all 0.2s; }
+  .nav-item.active { color: #e8698a; }
+  .nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .nav-item.active svg { stroke: #e8698a; }
+
+  /* PAGES */
+  .page { display: none; padding: 0 0 90px 0; animation: fadeIn 0.3s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* HEADER */
+  .page-header { padding: 56px 20px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .page-title { font-size: 22px; font-weight: 700; color: #2d2340; letter-spacing: -0.5px; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: #f4cdd5; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #c4607a; font-weight: 600; }
+
+  /* REPORT PAGE */
+  .vibe-badge { background: #fde8ee; color: #e8698a; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; margin: -8px 20px 16px; display: inline-block; }
+
+  .donut-card { margin: 0 20px 16px; background: #fff; border-radius: 20px; padding: 20px; text-align: center; }
+  .donut-label { font-size: 12px; color: #aaa; margin-bottom: 6px; }
+  .donut-time { font-size: 42px; font-weight: 700; color: #2d2340; letter-spacing: -2px; }
+  .donut-time span { font-size: 18px; font-weight: 500; }
+  .donut-wrap { position: relative; width: 160px; height: 160px; margin: 16px auto; }
+  .donut-wrap canvas { position: absolute; top: 0; left: 0; }
+  .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+  .donut-pct { font-size: 22px; font-weight: 700; color: #e8698a; }
+  .donut-sub { font-size: 10px; color: #aaa; }
+  .legend { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #888; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .challenge-card { margin: 0 20px 16px; background: linear-gradient(135deg, #e8698a 0%, #c44f6e 100%); border-radius: 18px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .challenge-left .label { font-size: 10px; color: rgba(255,255,255,0.7); margin-bottom: 2px; }
+  .challenge-left .title { font-size: 15px; font-weight: 700; color: #fff; }
+  .challenge-left .desc { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 4px; }
+  .challenge-btn { background: #fff; color: #e8698a; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; white-space: nowrap; }
+
+  .filter-tabs { display: flex; gap: 8px; padding: 0 20px 12px; overflow-x: auto; scrollbar-width: none; }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1.5px solid #e0daf2; color: #888; cursor: pointer; white-space: nowrap; transition: all 0.2s; background: #fff; }
+  .tab.active { background: #2d2340; color: #fff; border-color: #2d2340; }
+
+  .section-title { font-size: 13px; font-weight: 600; color: #888; padding: 0 20px 10px; letter-spacing: 0.2px; }
+
+  .app-list { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
+  .app-row { background: #fff; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .app-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .app-info { flex: 1; }
+  .app-name { font-size: 14px; font-weight: 600; color: #2d2340; }
+  .app-time { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .app-bar-wrap { flex: 0 0 80px; }
+  .app-bar-bg { background: #f0eef8; border-radius: 4px; height: 5px; overflow: hidden; }
+  .app-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .app-badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+  .badge-control { background: #f0eef8; color: #7c6faf; }
+  .badge-limited { background: #fde8ee; color: #e8698a; }
+
+  /* CALENDAR PAGE */
+  .cal-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 20px 16px; }
+  .cal-nav-title { font-size: 18px; font-weight: 700; color: #2d2340; }
+  .cal-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #e0daf2; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: #888; }
+
+  .cal-grid { padding: 0 20px 16px; }
+  .cal-days-header { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 8px; }
+  .cal-day-name { text-align: center; font-size: 11px; color: #aaa; font-weight: 500; }
+  .cal-cells { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-cell { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; color: #2d2340; cursor: pointer; position: relative; }
+  .cal-cell.other-month { color: #ccc; }
+  .cal-cell.today { background: #e8698a; color: #fff; font-weight: 700; }
+  .cal-cell.selected { background: #fde8ee; color: #e8698a; font-weight: 700; }
+  .cal-cell .dot { width: 4px; height: 4px; border-radius: 50%; background: #e8698a; position: absolute; bottom: 3px; }
+  .cal-cell.today .dot { background: #fff; }
+
+  .day-detail { margin: 0 20px 16px; background: #e8698a; border-radius: 20px; padding: 18px 20px; color: #fff; }
+  .day-detail .date-label { font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 4px; }
+  .day-detail .total-label { font-size: 12px; color: rgba(255,255,255,0.7); }
+  .day-detail .total-time { font-size: 38px; font-weight: 700; letter-spacing: -1.5px; }
+  .day-detail .total-time span { font-size: 18px; font-weight: 500; }
+  .day-detail .change { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 6px; }
+
+  .app-detail-list { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
+  .app-detail-row { background: #fff; border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+  .app-detail-bar-bg { flex: 1; background: #f0eef8; border-radius: 4px; height: 6px; overflow: hidden; }
+  .app-detail-bar-fill { height: 100%; border-radius: 4px; }
+  .app-detail-time { font-size: 12px; font-weight: 600; color: #2d2340; flex-shrink: 0; min-width: 40px; text-align: right; }
+
+  .week-chart { margin: 0 20px; background: #fff; border-radius: 20px; padding: 16px; }
+  .week-chart-title { font-size: 13px; font-weight: 600; color: #888; margin-bottom: 16px; }
+  .bars { display: flex; align-items: flex-end; justify-content: space-around; height: 80px; gap: 6px; }
+  .bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+  .bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease; min-height: 4px; }
+  .bar-label { font-size: 10px; color: #aaa; }
+
+  /* SETTINGS PAGE */
+  .profile-card { margin: 0 20px 20px; background: #fff; border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 14px; }
+  .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: #fde8ee; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .profile-name { font-size: 16px; font-weight: 700; color: #2d2340; }
+  .profile-email { font-size: 12px; color: #aaa; margin-top: 3px; }
+  .edit-btn { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #e0daf2; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #aaa; font-size: 16px; }
+
+  .settings-group { margin: 0 20px 16px; }
+  .settings-group-title { font-size: 11px; font-weight: 600; color: #aaa; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; padding-left: 4px; }
+  .settings-list { background: #fff; border-radius: 16px; overflow: hidden; }
+  .settings-row { padding: 14px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f5f3fc; cursor: pointer; transition: background 0.15s; }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row:active { background: #f5f3fc; }
+  .settings-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .settings-text { flex: 1; }
+  .settings-label { font-size: 14px; font-weight: 500; color: #2d2340; }
+  .settings-value { font-size: 12px; color: #aaa; margin-top: 1px; }
+  .settings-arrow { color: #ccc; font-size: 16px; }
+  .toggle { width: 44px; height: 26px; background: #4CAF50; border-radius: 13px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+  .toggle::after { content: ''; width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 3px; left: 21px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+  .toggle.off { background: #e0daf2; }
+  .toggle.off::after { left: 3px; }
+  .logout-row { color: #e8698a !important; }
+  .logout-row .settings-label { color: #e8698a; }
+
+  .version-text { text-align: center; font-size: 11px; color: #ccc; padding: 8px; }
+
+  /* DRAWER */
+  .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0); pointer-events: none; z-index: 200; transition: background 0.3s ease; left: 50%; transform: translateX(-50%); width: 390px; }
+  .drawer-overlay.open { background: rgba(30,20,50,0.45); pointer-events: all; }
+  .drawer { position: absolute; top: 0; left: 0; width: 270px; min-height: 100vh; background: #fff; z-index: 201; transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; padding: 0 0 32px; will-change: transform; }
+  .drawer-overlay.open .drawer { transform: translateX(0); }
+  .drawer.dragging { transition: none; }
+  .drawer-header { padding: 56px 20px 20px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #f0eef8; }
+  .drawer-user { display: flex; flex-direction: column; gap: 4px; }
+  .drawer-avatar { width: 48px; height: 48px; border-radius: 50%; background: #fde8ee; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 10px; }
+  .drawer-name { font-size: 16px; font-weight: 700; color: #2d2340; }
+  .drawer-vibe { background: #fde8ee; color: #e8698a; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; display: inline-block; margin-top: 4px; }
+  .drawer-close { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #e8e4f5; background: #f5f3fc; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .drawer-nav { padding: 16px 0; flex: 1; }
+  .drawer-nav-item { display: flex; align-items: center; gap: 14px; padding: 14px 24px; font-size: 15px; font-weight: 500; color: #888; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+  .drawer-nav-item:active { background: #fdf5f7; }
+  .drawer-nav-item.active { color: #2d2340; border-left-color: #e8698a; background: #fdf5f7; }
+  .drawer-nav-item svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; }
+  .drawer-nav-item.active svg { stroke: #e8698a; }
+
+  /* HAMBURGER BUTTON in header */
+  .hamburger { width: 36px; height: 36px; border-radius: 10px; background: #f5f3fc; border: none; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; padding: 0; }
+  .hamburger span { display: block; width: 18px; height: 2px; background: #2d2340; border-radius: 2px; transition: all 0.2s; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- DRAWER -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer(event)">
+    <div class="drawer" id="drawer">
+      <div class="drawer-header">
+        <div class="drawer-user">
+          <div class="drawer-avatar">👤</div>
+          <div class="drawer-name">사용자</div>
+          <div class="drawer-vibe">Vibe: Chilled</div>
+        </div>
+        <div class="drawer-close" onclick="closeDrawerDirect()">✕</div>
+      </div>
+      <nav class="drawer-nav">
+        <div class="drawer-nav-item active" id="drawer-report" onclick="drawerGoTo('report')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>
+          보고서
+        </div>
+        <div class="drawer-nav-item" id="drawer-calendar" onclick="drawerGoTo('calendar')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+          캘린더
+        </div>
+        <div class="drawer-nav-item" id="drawer-settings" onclick="drawerGoTo('settings')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          설정
+        </div>
+      </nav>
+      <div style="padding:0 24px">
+        <div style="font-size:11px;color:#ccc;border-top:1px solid #f0eef8;padding-top:16px">Digital Wellness v2.4.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORT PAGE -->
+  <div class="page active" id="page-report">
+    <div class="page-header" style="position:relative">
+      <button class="hamburger" onclick="openDrawer()" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title" style="position:absolute;left:50%;transform:translateX(-50%)">Digital Wellness</div>
+      <div class="avatar">사</div>
+    </div>
+    <div class="vibe-badge">Vibe: Chilled</div>
+
+    <div class="donut-card">
+      <div class="donut-label">오늘의 총 사용 시간</div>
+      <div class="donut-time" id="total-time-display">-- <span>시간 --분</span></div>
+      <div class="donut-wrap">
+        <canvas id="donut" width="160" height="160"></canvas>
+        <div class="donut-center">
+          <div class="donut-pct" id="donut-pct">--%</div>
+          <div class="donut-sub">평균 대비</div>
+        </div>
+      </div>
+      <div class="legend" id="donut-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#f4a0b8"></div>SNS</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7ec8a4"></div>생산성</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#9b8fe0"></div>게임</div>
+      </div>
+    </div>
+
+    <!-- SYNC CARD -->
+    <div style="margin:0 20px 16px;background:#fff;border-radius:20px;padding:18px 20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#2d2340">스마트폰 사용량 연동</div>
+          <div style="font-size:11px;color:#aaa;margin-top:2px">오늘 사용한 앱과 시간을 입력하세요</div>
+        </div>
+        <div id="sync-status" style="font-size:10px;color:#aaa;display:flex;align-items:center;gap:4px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#e0daf2"></div>미연동
+        </div>
+      </div>
+      <textarea id="sync-input" placeholder="예시) 인스타그램 1시간 30분, 유튜브 45분, 카카오톡 20분, 틱톡 1시간" style="width:100%;border:1.5px solid #e8e4f5;border-radius:12px;padding:12px;font-size:13px;font-family:inherit;color:#2d2340;resize:none;height:72px;outline:none;background:#fafaf8;line-height:1.5"></textarea>
+      <button id="sync-btn" onclick="syncData()" style="width:100%;margin-top:10px;background:#e8698a;color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s">
+        AI로 분석 후 반영하기
+      </button>
+      <div id="sync-loading" style="display:none;text-align:center;padding:10px 0;font-size:12px;color:#aaa">
+        <span id="sync-loading-text">분석 중...</span>
+      </div>
+    </div>
+
+    <div class="challenge-card">
+      <div class="challenge-left">
+        <div class="label">챌린지 시작</div>
+        <div class="title">일일 목표</div>
+        <div class="desc">3시간 미만 사용하기</div>
+      </div>
+      <button class="challenge-btn">도전하기</button>
+    </div>
+
+    <div class="filter-tabs">
+      <div class="tab active" onclick="filterApps('전체', this)">전체</div>
+      <div class="tab" onclick="filterApps('소셜', this)">소셜</div>
+      <div class="tab" onclick="filterApps('생산성', this)">생산성</div>
+      <div class="tab" onclick="filterApps('엔터테인먼트', this)">엔터테인먼트</div>
+    </div>
+
+    <div class="section-title">앱별 제어 설정</div>
+    <div class="app-list" id="app-list">
+      <div class="app-row" data-cat="소셜">
+        <div class="app-icon" style="background:#fce4ec">📸</div>
+        <div class="app-info"><div class="app-name">Instagram</div><div class="app-time">1시간 45분 사용</div></div>
+        <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:75%;background:#f4a0b8"></div></div></div>
+        <div class="app-badge badge-control">제어</div>
+      </div>
+      <div class="app-row" data-cat="엔터테인먼트">
+        <div class="app-icon" style="background:#ffebee">▶️</div>
+        <div class="app-info"><div class="app-name">YouTube</div><div class="app-time">55분 사용</div></div>
+        <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:40%;background:#ffb3b3"></div></div></div>
+        <div class="app-badge badge-control">제어</div>
+      </div>
+      <div class="app-row" data-cat="생산성">
+        <div class="app-icon" style="background:#e8f5e9">#️⃣</div>
+        <div class="app-info"><div class="app-name">Slack</div><div class="app-time">32분 사용</div></div>
+        <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:23%;background:#7ec8a4"></div></div></div>
+        <div class="app-badge badge-limited">제한됨</div>
+      </div>
+      <div class="app-row" data-cat="소셜">
+        <div class="app-icon" style="background:#fff9c4">💬</div>
+        <div class="app-info"><div class="app-name">카카오톡</div><div class="app-time">28분 사용</div></div>
+        <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:20%;background:#f4a0b8"></div></div></div>
+        <div class="app-badge badge-control">제어</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR PAGE -->
+  <div class="page" id="page-calendar">
+    <div class="page-header" style="position:relative">
+      <button class="hamburger" onclick="openDrawer()" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title" style="position:absolute;left:50%;transform:translateX(-50%)">Digital Wellness</div>
+      <div class="avatar">사</div>
+    </div>
+    <div class="vibe-badge">Vibe: Chilled</div>
+
+    <div class="cal-nav">
+      <div class="cal-nav-title">2024년 5월</div>
+      <div style="display:flex;gap:8px">
+        <button class="cal-nav-btn">‹</button>
+        <button class="cal-nav-btn">›</button>
+      </div>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-days-header">
+        <div class="cal-day-name">일</div><div class="cal-day-name">월</div><div class="cal-day-name">화</div>
+        <div class="cal-day-name">수</div><div class="cal-day-name">목</div><div class="cal-day-name">금</div><div class="cal-day-name">토</div>
+      </div>
+      <div class="cal-cells" id="cal-cells"></div>
+    </div>
+
+    <div class="day-detail">
+      <div class="date-label">5월 8일 수요일</div>
+      <div class="total-label">일일 총 사용량</div>
+      <div class="total-time">3시간 <span>42분</span></div>
+      <div class="change">+12% 어제 대비</div>
+    </div>
+
+    <div class="section-title" style="display:flex;justify-content:space-between;padding-right:20px">
+      앱별 상세 분석 <span style="color:#e8698a;font-size:12px;cursor:pointer">전체 보기</span>
+    </div>
+    <div class="app-detail-list">
+      <div class="app-detail-row">
+        <div class="app-icon" style="background:#e8f5e9;width:36px;height:36px;border-radius:9px;font-size:16px">🌐</div>
+        <div class="app-info"><div class="app-name">Safari</div></div>
+        <div class="app-detail-bar-bg"><div class="app-detail-bar-fill" style="width:85%;background:#7ec8a4"></div></div>
+        <div class="app-detail-time">1시간 12분</div>
+      </div>
+      <div class="app-detail-row">
+        <div class="app-icon" style="background:#fce4ec;width:36px;height:36px;border-radius:9px;font-size:16px">💬</div>
+        <div class="app-info"><div class="app-name">Messages</div></div>
+        <div class="app-detail-bar-bg"><div class="app-detail-bar-fill" style="width:52%;background:#f4a0b8"></div></div>
+        <div class="app-detail-time">45분</div>
+      </div>
+      <div class="app-detail-row">
+        <div class="app-icon" style="background:#ede7f6;width:36px;height:36px;border-radius:9px;font-size:16px">📝</div>
+        <div class="app-info"><div class="app-name">Notion</div></div>
+        <div class="app-detail-bar-bg"><div class="app-detail-bar-fill" style="width:44%;background:#9b8fe0"></div></div>
+        <div class="app-detail-time">38분</div>
+      </div>
+    </div>
+
+    <div class="week-chart" style="margin-top:16px">
+      <div class="week-chart-title">주간 트렌드</div>
+      <div class="bars" id="week-bars"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div class="page" id="page-settings">
+    <div class="page-header" style="position:relative">
+      <button class="hamburger" onclick="openDrawer()" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title" style="position:absolute;left:50%;transform:translateX(-50%)">Digital Wellness</div>
+      <div class="avatar">사</div>
+    </div>
+    <div class="vibe-badge">Vibe: Chilled</div>
+
+    <div class="profile-card">
+      <div class="profile-avatar">👤</div>
+      <div>
+        <div class="profile-name">사용자</div>
+        <div class="profile-email">alex.j@wellness.com</div>
+      </div>
+      <div class="edit-btn">✏️</div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">일반 설정</div>
+      <div class="settings-list">
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#fff0f3">🔔</div>
+          <div class="settings-text"><div class="settings-label">알림 설정</div></div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#e8f5f0">🎯</div>
+          <div class="settings-text">
+            <div class="settings-label">집중 모드</div>
+            <div class="settings-value">현재 활성화됨</div>
+          </div>
+          <div class="toggle" id="focus-toggle" onclick="toggleSwitch(this)"></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#f0f0ff">⏰</div>
+          <div class="settings-text">
+            <div class="settings-label">목표 사용 시간</div>
+            <div class="settings-value">일일 3시간 30분</div>
+          </div>
+          <div class="settings-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">앱별 설정</div>
+      <div class="settings-list">
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#fce4ec">⏱️</div>
+          <div class="settings-text"><div class="settings-label">앱 시간 제한 관리</div></div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#fff3e0">🚫</div>
+          <div class="settings-text"><div class="settings-label">차단된 앱 리스트</div></div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#e8f5e9">⚙️</div>
+          <div class="settings-text"><div class="settings-label">자동 집중 모드 설정</div></div>
+          <div class="settings-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">계정 관리</div>
+      <div class="settings-list">
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#e3f2fd">🔒</div>
+          <div class="settings-text"><div class="settings-label">비밀번호 및 보안</div></div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-icon" style="background:#f3e5f5">☁️</div>
+          <div class="settings-text"><div class="settings-label">데이터 백업 및 동기화</div></div>
+          <div class="settings-arrow">›</div>
+        </div>
+        <div class="settings-row logout-row">
+          <div class="settings-icon" style="background:#fde8ee">🚪</div>
+          <div class="settings-text"><div class="settings-label">로그아웃</div></div>
+          <div class="settings-arrow" style="color:#e8698a">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="version-text">Digital Wellness v2.4.0<br>© 2024 Wellbeing Technologies Inc.</div>
+  </div>
+
+  <!-- NAV BAR -->
+  <nav class="nav" style="display:flex">
+    <div class="nav-item active" onclick="goTo('report', this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>
+      보고서
+    </div>
+    <div class="nav-item" onclick="goTo('calendar', this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+      캘린더
+    </div>
+    <div class="nav-item" onclick="goTo('settings', this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      설정
+    </div>
+  </nav>
+</div>
+
+<script>
+// ── App metadata ──────────────────────────────────────────────
+const APP_META = {
+  '인스타그램':  { icon:'📸', bg:'#fce4ec', cat:'소셜',          bar:'#f4a0b8' },
+  'instagram':   { icon:'📸', bg:'#fce4ec', cat:'소셜',          bar:'#f4a0b8' },
+  '유튜브':      { icon:'▶️', bg:'#ffebee', cat:'엔터테인먼트',   bar:'#ffb3b3' },
+  'youtube':     { icon:'▶️', bg:'#ffebee', cat:'엔터테인먼트',   bar:'#ffb3b3' },
+  '슬랙':        { icon:'#️⃣', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  'slack':       { icon:'#️⃣', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  '카카오톡':    { icon:'💬', bg:'#fff9c4', cat:'소셜',           bar:'#f4a0b8' },
+  '카카오':      { icon:'💬', bg:'#fff9c4', cat:'소셜',           bar:'#f4a0b8' },
+  '틱톡':        { icon:'🎵', bg:'#fce4ec', cat:'엔터테인먼트',   bar:'#f4a0b8' },
+  'tiktok':      { icon:'🎵', bg:'#fce4ec', cat:'엔터테인먼트',   bar:'#f4a0b8' },
+  '넷플릭스':    { icon:'🎬', bg:'#ffebee', cat:'엔터테인먼트',   bar:'#ffb3b3' },
+  'netflix':     { icon:'🎬', bg:'#ffebee', cat:'엔터테인먼트',   bar:'#ffb3b3' },
+  '트위터':      { icon:'🐦', bg:'#e3f2fd', cat:'소셜',           bar:'#90caf9' },
+  'x':           { icon:'🐦', bg:'#e3f2fd', cat:'소셜',           bar:'#90caf9' },
+  '노션':        { icon:'📝', bg:'#ede7f6', cat:'생산성',         bar:'#9b8fe0' },
+  'notion':      { icon:'📝', bg:'#ede7f6', cat:'생산성',         bar:'#9b8fe0' },
+  '사파리':      { icon:'🌐', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  'safari':      { icon:'🌐', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  '크롬':        { icon:'🌐', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  'chrome':      { icon:'🌐', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  '네이버':      { icon:'🔍', bg:'#e8f5e9', cat:'생산성',         bar:'#7ec8a4' },
+  '카카오맵':    { icon:'🗺️', bg:'#fff9c4', cat:'생산성',         bar:'#7ec8a4' },
+  '게임':        { icon:'🎮', bg:'#ede7f6', cat:'게임',           bar:'#9b8fe0' },
+  '배그':        { icon:'🎮', bg:'#ede7f6', cat:'게임',           bar:'#9b8fe0' },
+  '롤':          { icon:'🎮', bg:'#ede7f6', cat:'게임',           bar:'#9b8fe0' },
+  '원신':        { icon:'🎮', bg:'#ede7f6', cat:'게임',           bar:'#9b8fe0' },
+  '스포티파이':  { icon:'🎵', bg:'#e8f5e9', cat:'엔터테인먼트',   bar:'#7ec8a4' },
+  'spotify':     { icon:'🎵', bg:'#e8f5e9', cat:'엔터테인먼트',   bar:'#7ec8a4' },
+};
+const CAT_COLORS = { '소셜':'#f4a0b8', '생산성':'#7ec8a4', '게임':'#9b8fe0', '엔터테인먼트':'#ffb3b3' };
+const DEFAULT_META = { icon:'📱', bg:'#f0eef8', cat:'기타', bar:'#c0b8e0' };
+
+function getMeta(name) {
+  const k = name.toLowerCase().trim();
+  return APP_META[k] || APP_META[name] || DEFAULT_META;
+}
+
+// ── Donut draw ────────────────────────────────────────────────
+function drawDonut(catTotals) {
+  const canvas = document.getElementById('donut');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 80, cy = 80, r = 60, lw = 18;
+  ctx.clearRect(0, 0, 160, 160);
+  ctx.strokeStyle = '#f0eef8'; ctx.lineWidth = lw;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
+
+  const entries = Object.entries(catTotals).filter(([,v]) => v > 0);
+  if (!entries.length) return;
+  const total = entries.reduce((s,[,v]) => s+v, 0);
+  let start = -Math.PI/2;
+  entries.forEach(([cat, v]) => {
+    const angle = (v/total)*Math.PI*2;
+    ctx.strokeStyle = CAT_COLORS[cat] || '#c0b8e0';
+    ctx.lineWidth = lw; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, start+0.05, start+angle-0.05);
+    ctx.stroke();
+    start += angle;
+  });
+
+  // legend
+  const legend = document.getElementById('donut-legend');
+  legend.innerHTML = entries.map(([cat]) =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${CAT_COLORS[cat]||'#c0b8e0'}"></div>${cat}</div>`
+  ).join('');
+}
+
+// ── App list render ───────────────────────────────────────────
+function renderApps(apps) {
+  const list = document.getElementById('app-list');
+  const maxMins = Math.max(...apps.map(a => a.mins), 1);
+  list.innerHTML = apps.map(a => {
+    const m = getMeta(a.name);
+    const pct = Math.round((a.mins/maxMins)*100);
+    const h = Math.floor(a.mins/60), min = a.mins%60;
+    const timeStr = h > 0 ? `${h}시간 ${min}분 사용` : `${min}분 사용`;
+    return `<div class="app-row" data-cat="${m.cat}">
+      <div class="app-icon" style="background:${m.bg}">${m.icon}</div>
+      <div class="app-info"><div class="app-name">${a.name}</div><div class="app-time">${timeStr}</div></div>
+      <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:${pct}%;background:${m.bar}"></div></div></div>
+      <div class="app-badge badge-control">제어</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Total time display ────────────────────────────────────────
+function updateTotalTime(totalMins, avgMins) {
+  const h = Math.floor(totalMins/60), m = totalMins%60;
+  document.getElementById('total-time-display').innerHTML =
+    `${String(h).padStart(2,'0')}시간 <span>${String(m).padStart(2,'0')}분</span>`;
+  const diff = avgMins ? Math.round((totalMins - avgMins)/avgMins*100) : null;
+  const pctEl = document.getElementById('donut-pct');
+  if (diff !== null) {
+    pctEl.textContent = (diff >= 0 ? '+' : '') + diff + '%';
+    pctEl.style.color = diff > 0 ? '#e8698a' : '#7ec8a4';
+  }
+}
+
+// ── Sync status indicator ─────────────────────────────────────
+function setSyncStatus(state) {
+  const el = document.getElementById('sync-status');
+  const colors = { loading:'#f4a0b8', synced:'#7ec8a4', error:'#e8698a', idle:'#e0daf2' };
+  const labels = { loading:'분석 중', synced:'연동됨', error:'오류', idle:'미연동' };
+  el.innerHTML = `<div style="width:6px;height:6px;border-radius:50%;background:${colors[state]}"></div>${labels[state]}`;
+}
+
+// ── AI Sync ───────────────────────────────────────────────────
+async function syncData() {
+  const input = document.getElementById('sync-input').value.trim();
+  if (!input) return;
+
+  const btn = document.getElementById('sync-btn');
+  const loadingEl = document.getElementById('sync-loading');
+  const loadingText = document.getElementById('sync-loading-text');
+  const msgs = ['앱 목록 파악 중...', '카테고리 분류 중...', '그래프 계산 중...', '데이터 반영 중...'];
+  let mi = 0;
+
+  btn.disabled = true; btn.style.opacity = '0.5';
+  loadingEl.style.display = 'block';
+  setSyncStatus('loading');
+  const interval = setInterval(() => { loadingText.textContent = msgs[mi++ % msgs.length]; }, 800);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `당신은 스마트폰 사용량 데이터를 분석하는 AI입니다.
+사용자가 입력한 앱 사용 데이터를 파싱하여 JSON으로만 응답하세요. 마크다운 코드블록 없이 순수 JSON만 출력하세요.
+
+응답 형식:
+{
+  "apps": [
+    { "name": "앱이름", "mins": 분(정수) }
+  ],
+  "totalMins": 전체합계분,
+  "avgMins": 일반적인하루평균분(추정)
+}
+
+규칙:
+- 앱 이름은 원래 입력 그대로 유지 (한국어면 한국어로)
+- 시간 표현 파싱: "1시간 30분"=90, "2시간"=120, "45분"=45, "1.5시간"=90
+- apps는 mins 내림차순 정렬
+- avgMins: 한국인 평균 스마트폰 사용시간 약 4~5시간(240~300분) 기준으로 추정`,
+        messages: [{ role: 'user', content: input }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content.map(c => c.text||'').join('');
+    const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
+
+    clearInterval(interval);
+    loadingEl.style.display = 'none';
+    btn.disabled = false; btn.style.opacity = '1';
+
+    // compute category totals
+    const catTotals = {};
+    parsed.apps.forEach(a => {
+      const cat = getMeta(a.name).cat;
+      catTotals[cat] = (catTotals[cat]||0) + a.mins;
+    });
+
+    drawDonut(catTotals);
+    renderApps(parsed.apps);
+    updateTotalTime(parsed.totalMins, parsed.avgMins);
+    setSyncStatus('synced');
+
+    // animate bars in
+    setTimeout(() => {
+      document.querySelectorAll('.app-bar-fill').forEach(el => {
+        const w = el.style.width;
+        el.style.width = '0';
+        requestAnimationFrame(() => { el.style.transition='width 0.6s ease'; el.style.width = w; });
+      });
+    }, 50);
+
+  } catch(e) {
+    clearInterval(interval);
+    loadingEl.style.display = 'none';
+    loadingText.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+    loadingEl.style.display = 'block';
+    btn.disabled = false; btn.style.opacity = '1';
+    setSyncStatus('error');
+    setTimeout(() => { loadingEl.style.display='none'; }, 2500);
+  }
+}
+
+// ── Initial donut (placeholder) ───────────────────────────────
+drawDonut({ 'SNS': 105, '생산성': 55, '게임': 28 });
+
+// ── Drawer functions ──────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+function closeDrawerDirect() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+function closeDrawer(e) {
+  if (e.target === document.getElementById('drawer-overlay')) {
+    document.getElementById('drawer-overlay').classList.remove('open');
+  }
+}
+function drawerGoTo(page) {
+  document.getElementById('drawer-overlay').classList.remove('open');
+  const navItems = document.querySelectorAll('.nav-item');
+  const map = { report:0, calendar:1, settings:2 };
+  goTo(page, navItems[map[page]]);
+  ['report','calendar','settings'].forEach(k => {
+    const el = document.getElementById('drawer-'+k);
+    if (el) el.classList.toggle('active', k===page);
+  });
+}
+
+// ── Swipe gesture ─────────────────────────────────────────────
+(function() {
+  const phone = document.querySelector('.phone');
+  const overlay = document.getElementById('drawer-overlay');
+  const drawer = document.getElementById('drawer');
+  const DRAWER_W = 270, SWIPE_MIN = 60, LOCK_ANGLE = 30;
+  let touchStartX=0, touchStartY=0, touchCurX=0, dragging=false, direction=null, locked=false;
+
+  function setDrawerX(x) {
+    const c = Math.max(-DRAWER_W, Math.min(0, x));
+    drawer.style.transform = `translateX(${c}px)`;
+    overlay.style.background = `rgba(30,20,50,${(0.45*(1+c/DRAWER_W)).toFixed(3)})`;
+  }
+
+  phone.addEventListener('touchstart', function(e) {
+    const t=e.touches[0]; touchStartX=t.clientX; touchStartY=t.clientY; touchCurX=t.clientX;
+    dragging=false; direction=null; locked=false;
+  }, {passive:true});
+
+  phone.addEventListener('touchmove', function(e) {
+    const t=e.touches[0]; const dx=t.clientX-touchStartX; const dy=t.clientY-touchStartY;
+    touchCurX=t.clientX; const isOpen=overlay.classList.contains('open');
+    if (!dragging && !locked) {
+      if (Math.abs(dx)<5 && Math.abs(dy)<5) return;
+      if (Math.abs(dy) > Math.abs(dx)*Math.tan(LOCK_ANGLE*Math.PI/180)) { locked=true; return; }
+      if (!isOpen && dx>0) { dragging=true; direction='open'; drawer.classList.add('dragging'); overlay.style.transition='none'; overlay.style.pointerEvents='all'; }
+      else if (isOpen && dx<0) { dragging=true; direction='close'; drawer.classList.add('dragging'); overlay.style.transition='none'; }
+      else { locked=true; return; }
+    }
+    if (!dragging) return;
+    direction==='open' ? setDrawerX(Math.min(dx,DRAWER_W)-DRAWER_W) : setDrawerX(Math.max(dx,-DRAWER_W));
+  }, {passive:true});
+
+  phone.addEventListener('touchend', function() {
+    if (!dragging) return;
+    dragging=false; drawer.classList.remove('dragging');
+    overlay.style.transition=''; overlay.style.background=''; drawer.style.transform='';
+    const dx=touchCurX-touchStartX;
+    if (direction==='open' && dx>SWIPE_MIN) overlay.classList.add('open');
+    else if (direction==='close' && dx<-SWIPE_MIN) { overlay.classList.remove('open'); overlay.style.pointerEvents=''; }
+    else if (!overlay.classList.contains('open')) overlay.style.pointerEvents='';
+  });
+})();
+
+// ── Navigation ────────────────────────────────────────────────
+function goTo(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if (el) el.classList.add('active');
+  ['report','calendar','settings'].forEach(k => {
+    const d=document.getElementById('drawer-'+k); if (d) d.classList.toggle('active', k===page);
+  });
+}
+
+function filterApps(cat, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#app-list .app-row').forEach(row => {
+    row.style.display=(cat==='전체'||row.dataset.cat===cat)?'':'none';
+  });
+}
+
+function toggleSwitch(el) { el.classList.toggle('off'); }
+
+// ── Calendar ──────────────────────────────────────────────────
+(function() {
+  const cells = document.getElementById('cal-cells');
+  const hasDot = [3,5,8,9,12,16,17,20,22];
+  const days = [28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,1];
+  days.forEach((d, i) => {
+    const cell = document.createElement('div'); cell.className='cal-cell';
+    if (i<3||i>33) cell.classList.add('other-month');
+    if (d===8&&i>=3) cell.classList.add('today');
+    cell.textContent=d;
+    if (hasDot.includes(d)&&i>=3&&i<=33) { const dot=document.createElement('div'); dot.className='dot'; cell.appendChild(dot); }
+    cell.addEventListener('click', function() { document.querySelectorAll('.cal-cell').forEach(c=>c.classList.remove('selected')); if (!this.classList.contains('today')) this.classList.add('selected'); });
+    cells.appendChild(cell);
+  });
+})();
+
+// ── Week bars ─────────────────────────────────────────────────
+(function() {
+  const bars = document.getElementById('week-bars');
+  const data = [{label:'월',mins:180},{label:'화',mins:240},{label:'수',mins:222},{label:'목',mins:310},{label:'금',mins:195},{label:'토',mins:270},{label:'일',mins:150}];
+  const max = Math.max(...data.map(d=>d.mins));
+  data.forEach((d,i) => {
+    const col=document.createElement('div'); col.className='bar-col';
+    const color = i===2 ? '#e8698a' : '#e0daf2';
+    col.innerHTML=`<div class="bar" style="height:${Math.round(d.mins/max*70)}px;background:${color};border-radius:4px 4px 0 0"></div><div class="bar-label">${d.label}</div>`;
+    bars.appendChild(col);
+  });
+})();
+</script>
+</body>
+</html>
