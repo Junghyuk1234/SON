@@ -1,4 +1,4 @@
-[digital-wellness (4).html](https://github.com/user-attachments/files/28855222/digital-wellness.4.html)
+[digital-wellness (4).html](https://github.com/user-attachments/files/28855344/digital-wellness.4.html)
 <!DOCTYPE html>
 <html lang="ko">
 <head>
