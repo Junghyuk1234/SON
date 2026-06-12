@@ -21,6 +21,11 @@
   .page { display: none; padding: 0 0 90px 0; animation: fadeIn 0.3s ease; }
   .page.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse {
+    0% { transform: scale(0.92); opacity: 0.65; }
+    50% { transform: scale(1.18); opacity: 1; }
+    100% { transform: scale(0.92); opacity: 0.65; }
+  }
 
   /* HEADER */
   .page-header { padding: 56px 20px 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -201,9 +206,18 @@
     </div>
     <div class="vibe-badge">Vibe: Chilled</div>
 
+    <!-- REAL-TIME TRACKER STATUS BANNER -->
+    <div style="margin: -8px 20px 16px; display: flex; justify-content: space-between; align-items: center; background: #fff; border-radius: 16px; padding: 10px 16px; box-shadow: 0 4px 12px rgba(124, 111, 175, 0.08); border: 1px solid #f0eef8;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div id="tracker-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #e8698a; animation: pulse 1.5s infinite;"></div>
+        <span id="tracker-status-text" style="font-size: 12px; font-weight: 700; color: #2d2340;">실시간 집계 중 (시뮬레이터)</span>
+      </div>
+      <button id="tracker-toggle-btn" onclick="toggleSimulator()" style="background: #fde8ee; color: #e8698a; border: none; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: inherit;">일시정지</button>
+    </div>
+
     <div class="donut-card">
       <div class="donut-label">오늘의 총 사용 시간</div>
-      <div class="donut-time" id="total-time-display">-- <span>시간 --분</span></div>
+      <div class="donut-time" id="total-time-display">00<span>시간 00분 00초</span></div>
       <div class="donut-wrap">
         <canvas id="donut" width="160" height="160"></canvas>
         <div class="donut-center">
@@ -218,25 +232,6 @@
       </div>
     </div>
 
-    <!-- SYNC CARD -->
-    <div style="margin:0 20px 16px;background:#fff;border-radius:20px;padding:18px 20px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#2d2340">스마트폰 사용량 연동</div>
-          <div style="font-size:11px;color:#aaa;margin-top:2px">오늘 사용한 앱과 시간을 입력하세요</div>
-        </div>
-        <div id="sync-status" style="font-size:10px;color:#aaa;display:flex;align-items:center;gap:4px">
-          <div style="width:6px;height:6px;border-radius:50%;background:#e0daf2"></div>미연동
-        </div>
-      </div>
-      <textarea id="sync-input" placeholder="예시) 인스타그램 1시간 30분, 유튜브 45분, 카카오톡 20분, 틱톡 1시간" style="width:100%;border:1.5px solid #e8e4f5;border-radius:12px;padding:12px;font-size:13px;font-family:inherit;color:#2d2340;resize:none;height:72px;outline:none;background:#fafaf8;line-height:1.5"></textarea>
-      <button id="sync-btn" onclick="syncData()" style="width:100%;margin-top:10px;background:#e8698a;color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s">
-        AI로 분석 후 반영하기
-      </button>
-      <div id="sync-loading" style="display:none;text-align:center;padding:10px 0;font-size:12px;color:#aaa">
-        <span id="sync-loading-text">분석 중...</span>
-      </div>
-    </div>
 
     <div class="challenge-card">
       <div class="challenge-left">
@@ -495,6 +490,61 @@ function getMeta(name) {
   return APP_META[k] || APP_META[name] || DEFAULT_META;
 }
 
+// ── State Management ──────────────────────────────────────────
+let appState = {
+  isNativeConnected: false, // true if updated via window.updateNativeUsageData
+  isSimulating: true,      // true if simulation is active (when not native-connected)
+  currentFilter: '전체',
+  apps: [],
+  avgMins: 240 // Average target (4 hours)
+};
+
+const STORAGE_KEY = 'digital_wellness_state_v1';
+
+// 앱 처음 실행 시 모든 앱의 타이머 및 사용량을 00시 00분 00초 기준으로 초기화
+function getInitialAppsForToday() {
+  return [
+    { name: 'Instagram', mins: 0, secs: 0, cat: '소셜' },
+    { name: 'YouTube', mins: 0, secs: 0, cat: '엔터테인먼트' },
+    { name: 'Slack', mins: 0, secs: 0, cat: '생산성' },
+    { name: '카카오톡', mins: 0, secs: 0, cat: '소셜' },
+    { name: 'Digital Wellness', mins: 0, secs: 0, cat: '생산성' }
+  ];
+}
+
+// LocalStorage에 상태 저장
+function saveStateToStorage() {
+  const dataToSave = {
+    apps: appState.apps,
+    avgMins: appState.avgMins,
+    lastSavedDate: new Date().toDateString()
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+}
+
+// LocalStorage에서 상태 로드 (자정이 지난 경우 00시 기준 초기값 재설정)
+function loadStateFromStorage() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const todayDateString = new Date().toDateString();
+
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.lastSavedDate === todayDateString) {
+        appState.apps = parsed.apps;
+        appState.avgMins = parsed.avgMins || 240;
+        return;
+      }
+    } catch (e) {
+      console.error('Error loading saved state:', e);
+    }
+  }
+
+  // 저장된 정보가 없거나 날짜가 바뀐 경우(자정 통과)
+  appState.apps = getInitialAppsForToday();
+  saveStateToStorage();
+}
+
 // ── Donut draw ────────────────────────────────────────────────
 function drawDonut(catTotals) {
   const canvas = document.getElementById('donut');
@@ -529,26 +579,56 @@ function drawDonut(catTotals) {
 // ── App list render ───────────────────────────────────────────
 function renderApps(apps) {
   const list = document.getElementById('app-list');
-  const maxMins = Math.max(...apps.map(a => a.mins), 1);
-  list.innerHTML = apps.map(a => {
+  // Sort apps by total time in descending order (mins * 60 + secs)
+  const sortedApps = [...apps].sort((a, b) => ((b.mins || 0) * 60 + (b.secs || 0)) - ((a.mins || 0) * 60 + (a.secs || 0)));
+  const maxSecs = Math.max(...sortedApps.map(a => (a.mins || 0) * 60 + (a.secs || 0)), 1);
+
+  list.innerHTML = sortedApps.map(a => {
     const m = getMeta(a.name);
-    const pct = Math.round((a.mins/maxMins)*100);
-    const h = Math.floor(a.mins/60), min = a.mins%60;
-    const timeStr = h > 0 ? `${h}시간 ${min}분 사용` : `${min}분 사용`;
+    const totalAppSecs = (a.mins || 0) * 60 + (a.secs || 0);
+    const pct = Math.round((totalAppSecs / maxSecs) * 100);
+    const h = Math.floor(a.mins / 60), min = a.mins % 60, sec = a.secs || 0;
+    
+    let timeStr = '';
+    if (h > 0) {
+      timeStr = `${h}시간 ${min}분 ${sec}초 사용`;
+    } else if (min > 0) {
+      timeStr = `${min}분 ${sec}초 사용`;
+    } else {
+      timeStr = `${sec}초 사용`;
+    }
+
+    // Add visual indicator for the wellness app itself
+    const isCurrent = a.name === 'Digital Wellness' ? '<span style="font-size:9px;background:#fde8ee;color:#e8698a;padding:2px 6px;border-radius:10px;margin-left:6px;font-weight:700;vertical-align:middle;display:inline-block;animation:pulse 1.5s infinite">현재 앱</span>' : '';
+
     return `<div class="app-row" data-cat="${m.cat}">
       <div class="app-icon" style="background:${m.bg}">${m.icon}</div>
-      <div class="app-info"><div class="app-name">${a.name}</div><div class="app-time">${timeStr}</div></div>
+      <div class="app-info">
+        <div class="app-name">${a.name}${isCurrent}</div>
+        <div class="app-time">${timeStr}</div>
+      </div>
       <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:${pct}%;background:${m.bar}"></div></div></div>
       <div class="app-badge badge-control">제어</div>
     </div>`;
   }).join('');
+
+  // Re-apply active category filter
+  const cat = appState.currentFilter || '전체';
+  document.querySelectorAll('#app-list .app-row').forEach(row => {
+    row.style.display = (cat === '전체' || row.dataset.cat === cat) ? '' : 'none';
+  });
 }
 
 // ── Total time display ────────────────────────────────────────
-function updateTotalTime(totalMins, avgMins) {
-  const h = Math.floor(totalMins/60), m = totalMins%60;
+function updateTotalTime(totalSeconds, avgMins) {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  
   document.getElementById('total-time-display').innerHTML =
-    `${String(h).padStart(2,'0')}시간 <span>${String(m).padStart(2,'0')}분</span>`;
+    `${String(h).padStart(2,'0')}시간 <span>${String(m).padStart(2,'0')}분 ${String(s).padStart(2,'0')}초</span>`;
+  
+  const totalMins = totalSeconds / 60;
   const diff = avgMins ? Math.round((totalMins - avgMins)/avgMins*100) : null;
   const pctEl = document.getElementById('donut-pct');
   if (diff !== null) {
@@ -557,100 +637,148 @@ function updateTotalTime(totalMins, avgMins) {
   }
 }
 
-// ── Sync status indicator ─────────────────────────────────────
-function setSyncStatus(state) {
-  const el = document.getElementById('sync-status');
-  const colors = { loading:'#f4a0b8', synced:'#7ec8a4', error:'#e8698a', idle:'#e0daf2' };
-  const labels = { loading:'분석 중', synced:'연동됨', error:'오류', idle:'미연동' };
-  el.innerHTML = `<div style="width:6px;height:6px;border-radius:50%;background:${colors[state]}"></div>${labels[state]}`;
-}
+// ── UI Sync & Render State ─────────────────────────────────────
+function updateUI() {
+  const catTotals = {};
+  let totalSecs = 0;
 
-// ── AI Sync ───────────────────────────────────────────────────
-async function syncData() {
-  const input = document.getElementById('sync-input').value.trim();
-  if (!input) return;
+  appState.apps.forEach(a => {
+    const m = getMeta(a.name);
+    const cat = m.cat;
+    const mins = a.mins || 0;
+    const secs = a.secs || 0;
+    const totalSeconds = mins * 60 + secs;
+    
+    catTotals[cat] = (catTotals[cat] || 0) + totalSeconds / 60;
+    totalSecs += totalSeconds;
+  });
 
-  const btn = document.getElementById('sync-btn');
-  const loadingEl = document.getElementById('sync-loading');
-  const loadingText = document.getElementById('sync-loading-text');
-  const msgs = ['앱 목록 파악 중...', '카테고리 분류 중...', '그래프 계산 중...', '데이터 반영 중...'];
-  let mi = 0;
+  drawDonut(catTotals);
+  renderApps(appState.apps);
+  updateTotalTime(totalSecs, appState.avgMins);
 
-  btn.disabled = true; btn.style.opacity = '0.5';
-  loadingEl.style.display = 'block';
-  setSyncStatus('loading');
-  const interval = setInterval(() => { loadingText.textContent = msgs[mi++ % msgs.length]; }, 800);
+  // Update Status Banner
+  const dot = document.getElementById('tracker-status-dot');
+  const text = document.getElementById('tracker-status-text');
+  const btn = document.getElementById('tracker-toggle-btn');
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `당신은 스마트폰 사용량 데이터를 분석하는 AI입니다.
-사용자가 입력한 앱 사용 데이터를 파싱하여 JSON으로만 응답하세요. 마크다운 코드블록 없이 순수 JSON만 출력하세요.
-
-응답 형식:
-{
-  "apps": [
-    { "name": "앱이름", "mins": 분(정수) }
-  ],
-  "totalMins": 전체합계분,
-  "avgMins": 일반적인하루평균분(추정)
-}
-
-규칙:
-- 앱 이름은 원래 입력 그대로 유지 (한국어면 한국어로)
-- 시간 표현 파싱: "1시간 30분"=90, "2시간"=120, "45분"=45, "1.5시간"=90
-- apps는 mins 내림차순 정렬
-- avgMins: 한국인 평균 스마트폰 사용시간 약 4~5시간(240~300분) 기준으로 추정`,
-        messages: [{ role: 'user', content: input }]
-      })
-    });
-
-    const data = await res.json();
-    const text = data.content.map(c => c.text||'').join('');
-    const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
-
-    clearInterval(interval);
-    loadingEl.style.display = 'none';
-    btn.disabled = false; btn.style.opacity = '1';
-
-    // compute category totals
-    const catTotals = {};
-    parsed.apps.forEach(a => {
-      const cat = getMeta(a.name).cat;
-      catTotals[cat] = (catTotals[cat]||0) + a.mins;
-    });
-
-    drawDonut(catTotals);
-    renderApps(parsed.apps);
-    updateTotalTime(parsed.totalMins, parsed.avgMins);
-    setSyncStatus('synced');
-
-    // animate bars in
-    setTimeout(() => {
-      document.querySelectorAll('.app-bar-fill').forEach(el => {
-        const w = el.style.width;
-        el.style.width = '0';
-        requestAnimationFrame(() => { el.style.transition='width 0.6s ease'; el.style.width = w; });
-      });
-    }, 50);
-
-  } catch(e) {
-    clearInterval(interval);
-    loadingEl.style.display = 'none';
-    loadingText.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-    loadingEl.style.display = 'block';
-    btn.disabled = false; btn.style.opacity = '1';
-    setSyncStatus('error');
-    setTimeout(() => { loadingEl.style.display='none'; }, 2500);
+  if (appState.isNativeConnected) {
+    if (dot) { dot.style.background = '#7ec8a4'; dot.style.animation = 'pulse 1.5s infinite'; }
+    if (text) text.textContent = '스마트폰 연동 중 (실시간)';
+    if (btn) btn.style.display = 'none';
+  } else {
+    if (btn) btn.style.display = 'block';
+    if (appState.isSimulating) {
+      if (dot) { dot.style.background = '#e8698a'; dot.style.animation = 'pulse 1.5s infinite'; }
+      if (text) text.textContent = '실시간 집계 중 (시뮬레이터)';
+      if (btn) { btn.textContent = '일시정지'; btn.style.background = '#fde8ee'; btn.style.color = '#e8698a'; }
+    } else {
+      if (dot) { dot.style.background = '#ccc'; dot.style.animation = 'none'; }
+      if (text) text.textContent = '실시간 집계 정지됨';
+      if (btn) { btn.textContent = '시작'; btn.style.background = '#e8f5e9'; btn.style.color = '#7ec8a4'; }
+    }
   }
+  
+  // Save state to storage to persist daily counts
+  saveStateToStorage();
 }
 
-// ── Initial donut (placeholder) ───────────────────────────────
-drawDonut({ 'SNS': 105, '생산성': 55, '게임': 28 });
+// ── Toggle Simulator ──────────────────────────────────────────
+function toggleSimulator() {
+  appState.isSimulating = !appState.isSimulating;
+  updateUI();
+}
+
+// ── Native Bridge Interface ───────────────────────────────────
+window.updateNativeUsageData = function(appsJson) {
+  try {
+    const parsed = typeof appsJson === 'string' ? JSON.parse(appsJson) : appsJson;
+    if (Array.isArray(parsed)) {
+      appState.apps = parsed.map(a => {
+        const existing = appState.apps.find(ea => ea.name.toLowerCase() === a.name.toLowerCase());
+        return {
+          name: a.name,
+          mins: a.mins || 0,
+          secs: a.secs || 0,
+          cat: a.cat || (existing ? existing.cat : getMeta(a.name).cat)
+        };
+      });
+      appState.isNativeConnected = true;
+      updateUI();
+    }
+  } catch (e) {
+    console.error('Error updating native usage data:', e);
+  }
+};
+
+// ── Page Visibility tracking ──────────────────────────────────
+let isTabActive = true;
+document.addEventListener('visibilitychange', () => {
+  isTabActive = !document.hidden;
+});
+
+// ── Real-Time Simulation Loop ──────────────────────────────────
+let lastCheckedDate = new Date().toDateString();
+
+setInterval(() => {
+  // 날짜 변경 감지 (자정 통과 시 00시 기준으로 데이터 리셋)
+  const currentDateString = new Date().toDateString();
+  if (currentDateString !== lastCheckedDate) {
+    appState.apps = [
+      { name: 'Instagram', mins: 0, secs: 0, cat: '소셜' },
+      { name: 'YouTube', mins: 0, secs: 0, cat: '엔터테인먼트' },
+      { name: 'Slack', mins: 0, secs: 0, cat: '생산성' },
+      { name: '카카오톡', mins: 0, secs: 0, cat: '소셜' },
+      { name: 'Digital Wellness', mins: 0, secs: 0, cat: '생산성' }
+    ];
+    lastCheckedDate = currentDateString;
+    saveStateToStorage();
+    updateUI();
+    return;
+  }
+
+  if (appState.isNativeConnected) return;
+
+  let stateChanged = false;
+
+  // 1. Increment active app (Digital Wellness) if tab is active
+  if (isTabActive) {
+    const dwApp = appState.apps.find(a => a.name === 'Digital Wellness');
+    if (dwApp) {
+      dwApp.secs = (dwApp.secs || 0) + 1;
+      if (dwApp.secs >= 60) {
+        dwApp.mins = (dwApp.mins || 0) + Math.floor(dwApp.secs / 60);
+        dwApp.secs = dwApp.secs % 60;
+      }
+      stateChanged = true;
+    }
+  }
+
+  // 2. Background simulation for other installed apps
+  if (appState.isSimulating) {
+    if (Math.random() < 0.4) {
+      const otherApps = appState.apps.filter(a => a.name !== 'Digital Wellness');
+      if (otherApps.length > 0) {
+        const randomApp = otherApps[Math.floor(Math.random() * otherApps.length)];
+        randomApp.secs = (randomApp.secs || 0) + Math.floor(Math.random() * 2) + 1; // add 1 to 2 seconds
+        if (randomApp.secs >= 60) {
+          randomApp.mins = (randomApp.mins || 0) + Math.floor(randomApp.secs / 60);
+          randomApp.secs = randomApp.secs % 60;
+        }
+        stateChanged = true;
+      }
+    }
+  }
+
+  if (stateChanged) {
+    updateUI();
+  }
+}, 1000);
+
+
+// ── Initialize State from LocalStorage ─────────────────────────
+loadStateFromStorage();
+updateUI();
 
 // ── Drawer functions ──────────────────────────────────────────
 function openDrawer() {
@@ -733,6 +861,7 @@ function goTo(page, el) {
 function filterApps(cat, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+  appState.currentFilter = cat;
   document.querySelectorAll('#app-list .app-row').forEach(row => {
     row.style.display=(cat==='전체'||row.dataset.cat===cat)?'':'none';
   });
