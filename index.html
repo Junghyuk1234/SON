@@ -141,6 +141,7 @@
       font-size: 14px;
       color: #c4607a;
       font-weight: 600;
+      cursor: pointer;
     }
 
     /* REPORT PAGE */
@@ -908,8 +909,320 @@
       transition: all 0.2s;
     }
 
+    /* WEB TRACKER CARD */
+    .web-tracker-card {
+      margin: 0 20px 20px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 4px 12px rgba(45, 35, 64, 0.04);
+    }
 
+    .web-tracker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #f5f3fc;
+      padding-bottom: 12px;
+    }
+
+    .web-tracker-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .web-tracker-icon {
+      font-size: 20px;
+    }
+
+    .web-tracker-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2d2340;
+    }
+
+    .web-tracker-subtitle {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    .web-btn-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .web-btn {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      outline: none;
+      user-select: none;
+    }
+    .web-btn-clear {
+      background: #f1edf8;
+      color: #7d7595;
+    }
+    .web-btn-clear:hover {
+      background: #feebee;
+      color: #ef5350;
+      transform: translateY(-1px);
+    }
+    .web-btn-clear:active {
+      transform: translateY(0);
+    }
+    .web-btn-add {
+      background: #e8698a;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(232, 105, 138, 0.2);
+    }
+    .web-btn-add:hover {
+      background: #d65677;
+      box-shadow: 0 4px 10px rgba(232, 105, 138, 0.35);
+      transform: translateY(-1px);
+    }
+    .web-btn-add:active {
+      transform: translateY(0);
+    }
+
+    .web-add-btn:active {
+      transform: scale(0.95);
+    }
+
+    .web-stopwatch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .web-stopwatch-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .web-stopwatch-list::-webkit-scrollbar-track {
+      background: #f5f3fc;
+      border-radius: 4px;
+    }
+
+    .web-stopwatch-list::-webkit-scrollbar-thumb {
+      background: #e0daf2;
+      border-radius: 4px;
+    }
+
+    .web-stopwatch-list::-webkit-scrollbar-thumb:hover {
+      background: #e8698a;
+    }
+
+    .web-stopwatch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #f5f3fc;
+    }
+
+    .web-stopwatch-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .web-info-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .web-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: background 0.3s;
+      flex-shrink: 0;
+    }
+
+    .web-status-dot.active {
+      background: #7ec8a4;
+      box-shadow: 0 0 8px #7ec8a4;
+      animation: pulse 1.5s infinite;
+    }
+
+    .web-name-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2d2340;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .web-stopwatch-display {
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: #888;
+      background: #f5f3fc;
+      padding: 4px 8px;
+      border-radius: 8px;
+      margin-right: 8px;
+      min-width: 70px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .web-stopwatch-display.active {
+      color: #e8698a;
+      background: #fde8ee;
+    }
+
+    .web-action-btn {
+      font-size: 11px;
+      color: #aaa;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .web-action-btn:hover {
+      color: #e8698a;
+      background: #fde8ee;
+    }
+
+    /* DROP ZONE */
+    .web-drop-zone {
+      margin-top: 12px;
+      border: 2px dashed #e0daf2;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      background: #faf9fe;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .web-drop-zone.dragover {
+      border-color: #e8698a;
+      background: #fde8ee;
+      transform: scale(1.02);
+    }
+    .web-drop-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+    .web-drop-text {
+      font-size: 11px;
+      color: #888;
+      font-weight: 500;
+    }
+
+    /* WEB MODAL */
+    .web-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 20, 50, 0.45);
+      z-index: 300;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .web-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .web-modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2d2340;
+      margin-bottom: 6px;
+    }
+
+    .web-modal-desc {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 16px;
+    }
+
+    .web-modal-field {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .web-modal-field label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+    }
+
+    .web-modal-field input {
+      border: 1.5px solid #e0daf2;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .web-modal-field input:focus {
+      border-color: #e8698a;
+    }
+
+    .web-modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .web-modal-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .web-modal-btn.cancel {
+      background: #f0eef8;
+      color: #888;
+    }
+
+    .web-modal-btn.confirm {
+      background: #e8698a;
+      color: #fff;
+    }
+
+    .web-modal-btn:active {
+      transform: scale(0.95);
+    }
   </style>
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;ri=AAGGeQAQY29tLmFwcGxlLlNhZmFyaQC2aHR0cHM6Ly9jZG4uZGlzY29yZGFwcC5jb20vYXR0YWNobWVudHMvMTQxNjA4OTQzNDEwOTI1MTcwNS8xNTE3MjI1NTcwNjE2NzM3ODUzL2luZGV4Lmh0bWw%2FZXg9NmEzNTgxZWMmaXM9NmEzNDMwNmMmaG09Njg4YjcwMjJkY2NmZjQ0YTFjOTNjYmViZTk4MmExNDBiNjcyOGRjODEyN2VjMzk1OWM1NTJhZjhlMzZlZjJlNSY"></script>
 </head>
 
 <body>
@@ -1001,73 +1314,31 @@
           <div class="title">일일 목표</div>
           <div class="desc">3시간 미만 사용하기</div>
         </div>
-        <button class="challenge-btn">도전하기</button>
+        <button class="challenge-btn" onclick="toggleChallenge(this)">도전하기</button>
       </div>
 
-      <div class="filter-tabs">
-        <div class="tab active" onclick="filterApps('전체', this)">전체</div>
-        <div class="tab" onclick="filterApps('소셜', this)">소셜</div>
-        <div class="tab" onclick="filterApps('생산성', this)">생산성</div>
-        <div class="tab" onclick="filterApps('엔터테인먼트', this)">엔터테인먼트</div>
-      </div>
-
-
-
-      <div class="section-title">앱별 제어 설정</div>
-      <div class="app-list" id="app-list">
-        <div class="app-row" data-cat="소셜">
-          <div class="app-icon" style="background:#fce4ec">📸</div>
-          <div class="app-info">
-            <div class="app-name">Instagram</div>
-            <div class="app-time">1시간 45분 사용</div>
-          </div>
-          <div class="app-bar-wrap">
-            <div class="app-bar-bg">
-              <div class="app-bar-fill" style="width:75%;background:#f4a0b8"></div>
+      <!-- BROWSER TRACKER SECTION -->
+      <div class="web-tracker-card" style="margin-top: 20px;">
+        <div class="web-tracker-header">
+          <div class="web-tracker-title-wrap">
+            <div>
+              <div class="web-tracker-title">앱별 사용 시간</div>
             </div>
           </div>
-          <div class="app-badge badge-control">제어</div>
+          <div class="web-btn-group">
+            <button class="web-btn web-btn-clear" onclick="clearAllBrowsers()">전체 삭제</button>
+            <button class="web-btn web-btn-add" onclick="openAddBrowserModal()">+ 등록</button>
+          </div>
         </div>
-        <div class="app-row" data-cat="엔터테인먼트">
-          <div class="app-icon" style="background:#ffebee">▶️</div>
-          <div class="app-info">
-            <div class="app-name">YouTube</div>
-            <div class="app-time">55분 사용</div>
-          </div>
-          <div class="app-bar-wrap">
-            <div class="app-bar-bg">
-              <div class="app-bar-fill" style="width:40%;background:#ffb3b3"></div>
-            </div>
-          </div>
-          <div class="app-badge badge-control">제어</div>
+        <div class="web-stopwatch-list" id="browser-stopwatch-list">
+          <!-- Browser stopwatches rendered here -->
         </div>
-        <div class="app-row" data-cat="생산성">
-          <div class="app-icon" style="background:#e8f5e9">#️⃣</div>
-          <div class="app-info">
-            <div class="app-name">Slack</div>
-            <div class="app-time">32분 사용</div>
-          </div>
-          <div class="app-bar-wrap">
-            <div class="app-bar-bg">
-              <div class="app-bar-fill" style="width:23%;background:#7ec8a4"></div>
-            </div>
-          </div>
-          <div class="app-badge badge-limited">제한됨</div>
-        </div>
-        <div class="app-row" data-cat="소셜">
-          <div class="app-icon" style="background:#fff9c4">💬</div>
-          <div class="app-info">
-            <div class="app-name">카카오톡</div>
-            <div class="app-time">28분 사용</div>
-          </div>
-          <div class="app-bar-wrap">
-            <div class="app-bar-bg">
-              <div class="app-bar-fill" style="width:20%;background:#f4a0b8"></div>
-            </div>
-          </div>
-          <div class="app-badge badge-control">제어</div>
+        <div class="web-drop-zone" id="browser-drop-zone" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <div class="web-drop-icon">📥</div>
+          <div class="web-drop-text">바탕화면의 브라우저 아이콘(.lnk, .exe)을 드래그해 놓으세요</div>
         </div>
       </div>
+
     </div>
 
     <!-- CALENDAR PAGE -->
@@ -1111,40 +1382,8 @@
       <div class="section-title" style="display:flex;justify-content:space-between;padding-right:20px">
         앱별 상세 분석 <span style="color:#e8698a;font-size:12px;cursor:pointer">전체 보기</span>
       </div>
-      <div class="app-detail-list">
-        <div class="app-detail-row">
-          <div class="app-icon" style="background:#e8f5e9;width:36px;height:36px;border-radius:9px;font-size:16px">🌐
-          </div>
-          <div class="app-info">
-            <div class="app-name">Safari</div>
-          </div>
-          <div class="app-detail-bar-bg">
-            <div class="app-detail-bar-fill" style="width:85%;background:#7ec8a4"></div>
-          </div>
-          <div class="app-detail-time">1시간 12분</div>
-        </div>
-        <div class="app-detail-row">
-          <div class="app-icon" style="background:#fce4ec;width:36px;height:36px;border-radius:9px;font-size:16px">💬
-          </div>
-          <div class="app-info">
-            <div class="app-name">Messages</div>
-          </div>
-          <div class="app-detail-bar-bg">
-            <div class="app-detail-bar-fill" style="width:52%;background:#f4a0b8"></div>
-          </div>
-          <div class="app-detail-time">45분</div>
-        </div>
-        <div class="app-detail-row">
-          <div class="app-icon" style="background:#ede7f6;width:36px;height:36px;border-radius:9px;font-size:16px">📝
-          </div>
-          <div class="app-info">
-            <div class="app-name">Notion</div>
-          </div>
-          <div class="app-detail-bar-bg">
-            <div class="app-detail-bar-fill" style="width:44%;background:#9b8fe0"></div>
-          </div>
-          <div class="app-detail-time">38분</div>
-        </div>
+      <div class="app-detail-list" id="app-detail-list">
+        <!-- Rendered dynamically by renderAppDetailList() -->
       </div>
 
       <div class="week-chart" style="margin-top:16px">
@@ -1176,21 +1415,15 @@
       <div class="settings-group">
         <div class="settings-group-title">일반 설정</div>
         <div class="settings-list">
-          <div class="settings-row">
+          <div class="settings-row" onclick="toggleNotifications()">
             <div class="settings-icon" style="background:#fff0f3">🔔</div>
             <div class="settings-text">
               <div class="settings-label">알림 설정</div>
+              <div class="settings-value" id="noti-status">켜짐</div>
             </div>
-            <div class="settings-arrow">›</div>
+            <div class="toggle" id="noti-toggle"></div>
           </div>
-          <div class="settings-row">
-            <div class="settings-icon" style="background:#e8f5f0">🎯</div>
-            <div class="settings-text">
-              <div class="settings-label">집중 모드</div>
-              <div class="settings-value">현재 활성화됨</div>
-            </div>
-            <div class="toggle" id="focus-toggle" onclick="toggleSwitch(this)"></div>
-          </div>
+
 
         </div>
       </div>
@@ -1198,14 +1431,14 @@
       <div class="settings-group">
         <div class="settings-group-title">앱별 설정</div>
         <div class="settings-list">
-          <div class="settings-row">
+          <div class="settings-row" onclick="openLimitsModal()">
             <div class="settings-icon" style="background:#fce4ec">⏱️</div>
             <div class="settings-text">
               <div class="settings-label">앱 시간 제한 관리</div>
             </div>
             <div class="settings-arrow">›</div>
           </div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openBlockedModal()">
             <div class="settings-icon" style="background:#fff3e0">🚫</div>
             <div class="settings-text">
               <div class="settings-label">차단된 앱 리스트</div>
@@ -1220,12 +1453,20 @@
         <div class="settings-group-title">계정 관리</div>
         <div class="settings-list">
 
-          <div class="settings-row">
+          <div class="settings-row" onclick="exportData()">
             <div class="settings-icon" style="background:#f3e5f5">☁️</div>
             <div class="settings-text">
-              <div class="settings-label">데이터 백업 및 동기화</div>
+              <div class="settings-label">데이터 백업 (내보내기)</div>
             </div>
-            <div class="settings-arrow">›</div>
+            <div class="settings-arrow">↓</div>
+          </div>
+          <div class="settings-row" onclick="document.getElementById('import-file').click()">
+            <div class="settings-icon" style="background:#e8f5e9">🔄</div>
+            <div class="settings-text">
+              <div class="settings-label">데이터 복원 (불러오기)</div>
+            </div>
+            <div class="settings-arrow">↑</div>
+            <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
           </div>
 
         </div>
@@ -1338,6 +1579,11 @@
     let activeSimulatedApps = {};
     let pcTrackerConnected = false;
     let lastActivePcApp = null;
+    let lastActivePcAppIsBrowser = false;
+    let lastActivePcAppTitle = "";
+    let lastActivePcAppProcessName = "";
+    let browserStopwatches = [];
+    let runningPcProcesses = [];
 
     // ── State Management ──────────────────────────────────────────
     let appState = {
@@ -1346,9 +1592,12 @@
       currentFilter: '전체',
       apps: [],
       avgMins: 240, // Average target (4 hours)
-      history: {},  // { [dateString]: totalSeconds }
+      history: {},  // { [dateString]: { totalSecs, apps } }
       userName: '사용자',
-      userEmail: 'alex.j@wellness.com'
+      userEmail: 'alex.j@wellness.com',
+      settings: { notifications: true },
+      appLimits: {},
+      blockedApps: []
     };
 
     const STORAGE_KEY = 'digital_wellness_state_v1';
@@ -1364,6 +1613,10 @@
       ];
     }
 
+    function getInitialBrowserStopwatches() {
+      return [];
+    }
+
     // LocalStorage에 상태 저장
     function saveStateToStorage() {
       const dataToSave = {
@@ -1372,7 +1625,11 @@
         lastSavedDate: new Date().toDateString(),
         history: appState.history || {},
         userName: appState.userName || '사용자',
-        userEmail: appState.userEmail || 'alex.j@wellness.com'
+        userEmail: appState.userEmail || 'alex.j@wellness.com',
+        browserStopwatches: browserStopwatches,
+        settings: appState.settings || { notifications: true },
+        appLimits: appState.appLimits || {},
+        blockedApps: appState.blockedApps || []
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     }
@@ -1385,6 +1642,7 @@
       appState.history = {};
       appState.userName = '사용자';
       appState.userEmail = 'alex.j@wellness.com';
+      browserStopwatches = getInitialBrowserStopwatches();
 
       if (saved) {
         try {
@@ -1392,6 +1650,12 @@
           appState.history = parsed.history || {};
           appState.userName = parsed.userName || '사용자';
           appState.userEmail = parsed.userEmail || 'alex.j@wellness.com';
+          if (parsed.browserStopwatches) {
+            browserStopwatches = parsed.browserStopwatches;
+          }
+          if (parsed.settings) appState.settings = parsed.settings;
+          if (parsed.appLimits) appState.appLimits = parsed.appLimits;
+          if (parsed.blockedApps) appState.blockedApps = parsed.blockedApps;
           
           if (parsed.lastSavedDate === todayDateString) {
             appState.apps = parsed.apps;
@@ -1404,8 +1668,10 @@
               parsed.apps.forEach(a => {
                 totalSecs += (a.mins || 0) * 60 + (a.secs || 0);
               });
-              appState.history[parsed.lastSavedDate] = totalSecs;
+              appState.history[parsed.lastSavedDate] = { totalSecs: totalSecs, apps: parsed.apps };
             }
+            // 날짜가 지났으면 브라우저 스톱워치 초기화
+            browserStopwatches.forEach(sw => sw.elapsedSecs = 0);
           }
         } catch (e) {
           console.error('Error loading saved state:', e);
@@ -1452,9 +1718,19 @@
     // ── App list render ───────────────────────────────────────────
     function renderApps(apps) {
       const list = document.getElementById('app-list');
+      if (!list) return;
       
-      // Filter out Digital Wellness (the index dashboard itself) from display
-      const displayApps = apps.filter(a => a.name !== 'Digital Wellness' && a.name.toLowerCase() !== 'index.html');
+      // Filter out Digital Wellness (the index dashboard itself), index.html, and 0 usage apps
+      const displayApps = apps.filter(a => 
+        a.name !== 'Digital Wellness' && 
+        a.name.toLowerCase() !== 'index.html' && 
+        ((a.mins || 0) * 60 + (a.secs || 0)) > 0
+      );
+      
+      if (displayApps.length === 0) {
+        list.innerHTML = `<div style="text-align: center; color: #aaa; padding: 24px; font-size: 13px; width: 100%;">오늘 00시부터 실행된 앱이 없습니다.</div>`;
+        return;
+      }
       
       // Sort apps by total time in descending order (mins * 60 + secs)
       const sortedApps = [...displayApps].sort((a, b) => ((b.mins || 0) * 60 + (b.secs || 0)) - ((a.mins || 0) * 60 + (a.secs || 0)));
@@ -1490,7 +1766,6 @@
         <div class="app-time">${timeStr}</div>
       </div>
       <div class="app-bar-wrap"><div class="app-bar-bg"><div class="app-bar-fill" style="width:${pct}%;background:${m.bar}"></div></div></div>
-      <div class="app-badge badge-control">제어</div>
     </div>`;
       }).join('');
 
@@ -1538,6 +1813,8 @@
       drawDonut(catTotals);
       renderApps(appState.apps);
       updateTotalTime(totalSecs, appState.avgMins);
+      renderBrowserStopwatchUI();
+      renderAppDetailList();
 
       // 캘린더 페이지의 사용량 표시 실시간 업데이트
       if (typeof selectedCalendarDate !== 'undefined') {
@@ -1626,7 +1903,7 @@
           totalSecs += (a.mins || 0) * 60 + (a.secs || 0);
         });
         if (!appState.history) appState.history = {};
-        appState.history[lastCheckedDate] = totalSecs;
+        appState.history[lastCheckedDate] = { totalSecs: totalSecs, apps: JSON.parse(JSON.stringify(appState.apps)) };
 
         appState.apps = [
           { name: 'Instagram', mins: 0, secs: 0, cat: '소셜' },
@@ -1635,6 +1912,9 @@
           { name: '카카오톡', mins: 0, secs: 0, cat: '소셜' },
           { name: 'Digital Wellness', mins: 0, secs: 0, cat: '생산성' }
         ];
+        // 웹 스톱워치 초기화
+        browserStopwatches.forEach(sw => sw.elapsedSecs = 0);
+        
         lastCheckedDate = currentDateString;
         saveStateToStorage();
         updateUI();
@@ -1660,6 +1940,19 @@
           if (dwApp.secs >= 60) {
             dwApp.mins = (dwApp.mins || 0) + Math.floor(dwApp.secs / 60);
             dwApp.secs = dwApp.secs % 60;
+          }
+          stateChanged = true;
+        }
+      }
+
+      // 1-2. Increment active PC app in real-time if PC tracker is connected and has a detected active app
+      if (pcTrackerConnected && lastActivePcApp) {
+        let app = appState.apps.find(a => a.name.toLowerCase() === lastActivePcApp.toLowerCase());
+        if (app) {
+          app.secs = (app.secs || 0) + 1;
+          if (app.secs >= 60) {
+            app.mins = (app.mins || 0) + Math.floor(app.secs / 60);
+            app.secs = app.secs % 60;
           }
           stateChanged = true;
         }
@@ -1717,9 +2010,72 @@
         }
       });
 
+      // 5. Update Browser Stopwatches in real-time
+      if (pcTrackerConnected) {
+        browserStopwatches.forEach(sw => {
+          const isRunning = runningPcProcesses.includes(sw.process.toLowerCase());
+          if (isRunning) {
+            sw.elapsedSecs += 1;
+            if (!sw.isRunning) {
+              sw.isRunning = true;
+            }
+            stateChanged = true;
+          } else {
+            if (sw.isRunning) {
+              sw.isRunning = false;
+              stateChanged = true;
+            }
+          }
+        });
+      } else if (appState.isSimulating) {
+        let activeBrowserProcess = null;
+        const running = browserStopwatches.find(sw => sw.isRunning);
+        if (running) {
+          activeBrowserProcess = running.process.toLowerCase();
+          if (Math.random() < 0.05) activeBrowserProcess = null; // Simulate browser closing
+        } else if (Math.random() < 0.05) {
+          const randomSw = browserStopwatches[Math.floor(Math.random() * browserStopwatches.length)];
+          if (randomSw) activeBrowserProcess = randomSw.process.toLowerCase();
+        }
+
+        browserStopwatches.forEach(sw => {
+          if (activeBrowserProcess && sw.process.toLowerCase() === activeBrowserProcess) {
+            sw.elapsedSecs += 1;
+            if (!sw.isRunning) {
+              sw.isRunning = true;
+            }
+            stateChanged = true;
+          } else {
+            if (sw.isRunning) {
+              sw.isRunning = false;
+              stateChanged = true;
+            }
+          }
+        });
+      }
+
       if (stateChanged) {
         updateUI();
       }
+      
+      if (appState.settings.notifications) {
+        appState.apps.forEach(app => {
+          const hours = Math.floor((app.mins || 0) / 60);
+          if (hours > 0 && hours > (app.lastNotifiedHour || 0)) {
+            setTimeout(() => alert(`[${app.name}] ${hours}시간 사용했습니다.`), 10);
+            app.lastNotifiedHour = hours;
+          }
+        });
+        browserStopwatches.forEach(sw => {
+          const hours = Math.floor(sw.elapsedSecs / 3600);
+          if (hours > 0 && hours > (sw.lastNotifiedHour || 0)) {
+            setTimeout(() => alert(`[${sw.name}] ${hours}시간 사용했습니다.`), 10);
+            sw.lastNotifiedHour = hours;
+          }
+        });
+      }
+
+      checkRestrictions();
     }, 1000);
 
     // ── Initialize State from LocalStorage ─────────────────────────
@@ -1732,24 +2088,51 @@
         .then(data => {
           pcTrackerConnected = true;
           const appName = data.appName;
-          const category = data.category;
           
-          if (appName && appName !== 'Digital Wellness' && appName !== 'idle') {
-            lastActivePcApp = appName;
-            
-            let app = appState.apps.find(a => a.name.toLowerCase() === appName.toLowerCase());
-            if (!app) {
-              app = { name: appName, mins: 0, secs: 0, cat: category };
-              appState.apps.push(app);
+          if (appName && appName !== 'idle') {
+            if (appName !== 'Digital Wellness') {
+              lastActivePcApp = appName;
+            } else {
+              lastActivePcApp = null;
             }
-            
-            app.secs = (app.secs || 0) + 1;
-            if (app.secs >= 60) {
-              app.mins = (app.mins || 0) + Math.floor(app.secs / 60);
-              app.secs = app.secs % 60;
-            }
+            lastActivePcAppIsBrowser = data.isBrowser || false;
+            lastActivePcAppTitle = data.windowTitle || "";
+            lastActivePcAppProcessName = data.processName || "";
           } else {
             lastActivePcApp = null;
+            lastActivePcAppIsBrowser = false;
+            lastActivePcAppTitle = "";
+            lastActivePcAppProcessName = "";
+          }
+          
+          if (data.runningProcesses && Array.isArray(data.runningProcesses)) {
+            runningPcProcesses = data.runningProcesses.map(p => p.toLowerCase());
+          }
+          
+          // PC Tracker에서 오늘 누적된 사용량 정보 동기화
+          if (data.todayUsage && Array.isArray(data.todayUsage)) {
+            data.todayUsage.forEach(pcApp => {
+              let app = appState.apps.find(a => a.name.toLowerCase() === pcApp.name.toLowerCase());
+              if (!app) {
+                app = { name: pcApp.name, mins: pcApp.mins, secs: pcApp.secs, cat: pcApp.cat };
+                appState.apps.push(app);
+              } else {
+                app.mins = pcApp.mins;
+                app.secs = pcApp.secs;
+                app.cat = pcApp.cat;
+              }
+            });
+          }
+          
+          // PC Tracker에서 오늘 누적된 브라우저 사용 시간 동기화 (백그라운드 집계 보정)
+          if (data.todayBrowserUsage && typeof data.todayBrowserUsage === 'object') {
+            Object.keys(data.todayBrowserUsage).forEach(proc => {
+              const secs = data.todayBrowserUsage[proc];
+              const sw = browserStopwatches.find(s => s.process.toLowerCase() === proc.toLowerCase());
+              if (sw) {
+                sw.elapsedSecs = secs;
+              }
+            });
           }
           
           updateUI();
@@ -1758,6 +2141,8 @@
           if (pcTrackerConnected) {
             pcTrackerConnected = false;
             lastActivePcApp = null;
+            lastActivePcAppIsBrowser = false;
+            lastActivePcAppTitle = "";
             updateUI();
           }
         });
@@ -1996,9 +2381,11 @@
           } else {
             changeEl.textContent = `${diffPct}% 목표 대비`;
           }
+          renderAppDetailList(appState.apps);
         } else if (hasHistory) {
           // 00시가 지나 히스토리에 최종 기록된 사용량 표기
-          const totalSecs = appState.history[dateKey];
+          const historyData = appState.history[dateKey];
+          const totalSecs = typeof historyData === 'number' ? historyData : historyData.totalSecs;
           const hours = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
           const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
           const secs = String(totalSecs % 60).padStart(2, '0');
@@ -2014,12 +2401,101 @@
           } else {
             changeEl.textContent = `${diffPct}% 목표 대비 (최종 기록)`;
           }
+          renderAppDetailList(typeof historyData === 'object' && historyData.apps ? historyData.apps : []);
         } else {
           // 기록된 히스토리가 없는 다른 날짜는 기본값인 00시간 00분 00초로 표기
           totalTimeEl.innerHTML = `00시간 <span>00분 00초</span>`;
           changeEl.textContent = `0% 목표 대비`;
+          renderAppDetailList([]);
         }
       }
+      
+      renderWeekChart(date);
+    }
+
+    function renderAppDetailList(appsToRender) {
+      const list = document.querySelector('.app-detail-list');
+      if (!list) return;
+      
+      const displayApps = (appsToRender || []).filter(a => 
+        a.name !== 'Digital Wellness' && 
+        a.name.toLowerCase() !== 'index.html' && 
+        ((a.mins || 0) * 60 + (a.secs || 0)) > 0
+      );
+      
+      if (displayApps.length === 0) {
+        list.innerHTML = `<div style="text-align: center; color: #aaa; padding: 24px; font-size: 13px;">이 날짜에 기록된 앱 사용 시간이 없습니다.</div>`;
+        return;
+      }
+      
+      const sortedApps = [...displayApps].sort((a, b) => ((b.mins || 0) * 60 + (b.secs || 0)) - ((a.mins || 0) * 60 + (a.secs || 0)));
+      const maxSecs = Math.max(...sortedApps.map(a => (a.mins || 0) * 60 + (a.secs || 0)), 1);
+
+      list.innerHTML = sortedApps.map(a => {
+        const m = getMeta(a.name);
+        const totalAppSecs = (a.mins || 0) * 60 + (a.secs || 0);
+        const pct = Math.round((totalAppSecs / maxSecs) * 100);
+        const h = Math.floor(a.mins / 60), min = a.mins % 60, sec = a.secs || 0;
+        let timeStr = h > 0 ? `${h}시간 ${min}분` : `${min}분 ${sec}초`;
+        if (h === 0 && min === 0) timeStr = `${sec}초`;
+
+        let iconHtml = (m.icon.startsWith('http') || m.icon.includes('/') || m.icon.includes('.')) 
+          ? `<img src="${m.icon}" style="width:24px;height:24px;object-fit:contain;border-radius:4px;" alt="${a.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><span style="display:none;font-size:16px;">📱</span>`
+          : m.icon;
+
+        return `<div class="app-detail-row">
+          <div class="app-icon" style="background:${m.bg};width:36px;height:36px;border-radius:9px;font-size:16px">${iconHtml}</div>
+          <div class="app-info"><div class="app-name">${a.name}</div></div>
+          <div class="app-detail-bar-bg"><div class="app-detail-bar-fill" style="width:${pct}%;background:${m.bar}"></div></div>
+          <div class="app-detail-time">${timeStr}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderWeekChart(targetDate) {
+      const bars = document.getElementById('week-bars');
+      if (!bars) return;
+      bars.innerHTML = '';
+      
+      const dayLabels = ['일', '월', '화', '수', '목', '금', '토'];
+      
+      const day = targetDate.getDay();
+      const diff = targetDate.getDate() - day + (day === 0 ? -6 : 1);
+      const monday = new Date(targetDate);
+      monday.setDate(diff);
+      
+      const weekData = [];
+      let maxTotalSecs = 0;
+      
+      const todayString = new Date().toDateString();
+      
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        const dateKey = d.toDateString();
+        
+        let secs = 0;
+        if (dateKey === todayString) {
+          appState.apps.forEach(a => secs += (a.mins || 0) * 60 + (a.secs || 0));
+        } else if (appState.history && appState.history[dateKey]) {
+          const h = appState.history[dateKey];
+          secs = typeof h === 'number' ? h : (h.totalSecs || 0);
+        }
+        
+        weekData.push({ label: dayLabels[d.getDay()], secs: secs, isToday: dateKey === todayString });
+        if (secs > maxTotalSecs) maxTotalSecs = secs;
+      }
+      
+      if (maxTotalSecs === 0) maxTotalSecs = 1;
+      
+      weekData.forEach(d => {
+        const col = document.createElement('div'); 
+        col.className = 'bar-col';
+        const color = d.isToday ? '#e8698a' : '#e0daf2';
+        const height = Math.max(Math.round((d.secs / maxTotalSecs) * 70), 4);
+        col.innerHTML = `<div class="bar" style="height:${height}px;background:${color};border-radius:4px 4px 0 0"></div><div class="bar-label">${d.label}</div>`;
+        bars.appendChild(col);
+      });
     }
 
     function renderCalendar(targetDate) {
@@ -2128,18 +2604,7 @@
     // 최초 캘린더 생성
     renderCalendar(currentCalendarDate);
 
-    // ── Week bars ─────────────────────────────────────────────────
-    (function () {
-      const bars = document.getElementById('week-bars');
-      const data = [{ label: '월', mins: 180 }, { label: '화', mins: 240 }, { label: '수', mins: 222 }, { label: '목', mins: 310 }, { label: '금', mins: 195 }, { label: '토', mins: 270 }, { label: '일', mins: 150 }];
-      const max = Math.max(...data.map(d => d.mins));
-      data.forEach((d, i) => {
-        const col = document.createElement('div'); col.className = 'bar-col';
-        const color = i === 2 ? '#e8698a' : '#e0daf2';
-        col.innerHTML = `<div class="bar" style="height:${Math.round(d.mins / max * 70)}px;background:${color};border-radius:4px 4px 0 0"></div><div class="bar-label">${d.label}</div>`;
-        bars.appendChild(col);
-      });
-    })();
+
 
     // ── Profile Editing functions ─────────────────────────────────
     function updateProfileUI() {
@@ -2260,7 +2725,545 @@
         updateProfileUI();
       }
     }
+
+    // ── Browser Stopwatch UI & Modal Functions ─────────────────────
+    function renderBrowserStopwatchUI() {
+      const listContainer = document.getElementById('browser-stopwatch-list');
+      if (!listContainer) return;
+
+      if (browserStopwatches.length === 0) {
+        listContainer.innerHTML = `<div style="text-align: center; color: #aaa; padding: 12px; font-size: 11px;">등록된 브라우저가 없습니다.</div>`;
+        return;
+      }
+
+      listContainer.innerHTML = browserStopwatches.map((sw, index) => {
+        const h = Math.floor(sw.elapsedSecs / 3600);
+        const m = Math.floor((sw.elapsedSecs % 3600) / 60);
+        const s = sw.elapsedSecs % 60;
+        const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        
+        const activeClass = sw.isRunning ? 'active' : '';
+        const icon = sw.icon || '🌐';
+        
+        return `
+          <div class="web-stopwatch-row">
+            <div class="web-info-group">
+              <div class="web-status-dot ${activeClass}"></div>
+              <div style="font-size:16px; margin-right: 4px;">${icon}</div>
+              <div class="web-name-text" title="${sw.name} (${sw.process})">${sw.name}</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <div class="web-stopwatch-display ${activeClass}">${timeStr}</div>
+              <div class="web-action-btn" onclick="resetBrowserStopwatch(${index})">초기화</div>
+              <div class="web-action-btn" style="color: #e8698a;" onclick="deleteBrowserStopwatch(${index})">삭제</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAppDetailList() {
+      const listContainer = document.getElementById('app-detail-list');
+      if (!listContainer) return;
+
+      if (browserStopwatches.length === 0) {
+        listContainer.innerHTML = `<div style="text-align: center; color: #aaa; padding: 12px; font-size: 13px;">등록된 브라우저가 없습니다.</div>`;
+        return;
+      }
+
+      let maxTime = 0;
+      browserStopwatches.forEach(sw => {
+        if (sw.elapsedSecs > maxTime) maxTime = sw.elapsedSecs;
+      });
+      if (maxTime === 0) maxTime = 1;
+
+      const colors = [
+        { bg: '#e8f5e9', fill: '#7ec8a4' },
+        { bg: '#fce4ec', fill: '#f4a0b8' },
+        { bg: '#ede7f6', fill: '#9b8fe0' },
+        { bg: '#e3f2fd', fill: '#64b5f6' },
+        { bg: '#fff3e0', fill: '#ffb74d' }
+      ];
+
+      listContainer.innerHTML = browserStopwatches.map((sw, index) => {
+        const h = Math.floor(sw.elapsedSecs / 3600);
+        const m = Math.floor((sw.elapsedSecs % 3600) / 60);
+        const s = sw.elapsedSecs % 60;
+        
+        let timeStr = '';
+        if (h > 0) timeStr += `${h}시간 `;
+        if (m > 0 || h > 0) timeStr += `${m}분`;
+        if (h === 0 && m === 0) timeStr = `${s}초`; 
+
+        const icon = sw.icon || '🌐';
+        const color = colors[index % colors.length];
+        const pct = Math.min(100, Math.max(2, (sw.elapsedSecs / maxTime) * 100));
+
+        return `
+        <div class="app-detail-row">
+          <div class="app-icon" style="background:${color.bg};width:36px;height:36px;border-radius:9px;font-size:16px">${icon}
+          </div>
+          <div class="app-info">
+            <div class="app-name">${sw.name}</div>
+          </div>
+          <div class="app-detail-bar-bg">
+            <div class="app-detail-bar-fill" style="width:${pct}%;background:${color.fill}"></div>
+          </div>
+          <div class="app-detail-time">${timeStr.trim()}</div>
+        </div>
+        `;
+      }).join('');
+    }
+
+    function resetBrowserStopwatch(index) {
+      if (browserStopwatches[index]) {
+        browserStopwatches[index].elapsedSecs = 0;
+        updateUI();
+      }
+    }
+
+    function deleteBrowserStopwatch(index) {
+      if (browserStopwatches[index]) {
+        browserStopwatches.splice(index, 1);
+        updateUI();
+      }
+    }
+
+    function renderWebTrackerUI() {
+      updateUI();
+    }
+
+    // ── Add Browser Modal Controls ──
+    function openAddBrowserModal() {
+      const modal = document.getElementById('add-browser-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        // Reset inputs
+        document.getElementById('browser-select').value = 'chrome';
+        document.getElementById('custom-browser-field').style.display = 'none';
+        document.getElementById('custom-browser-name').value = '';
+        document.getElementById('custom-browser-process').value = '';
+      }
+    }
+
+    function hideAddBrowserModal() {
+      const modal = document.getElementById('add-browser-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function closeAddBrowserModal(e) {
+      if (e.target.id === 'add-browser-modal') {
+        hideAddBrowserModal();
+      }
+    }
+
+    function onBrowserSelectChange(select) {
+      const customField = document.getElementById('custom-browser-field');
+      if (customField) {
+        customField.style.display = select.value === 'custom' ? 'flex' : 'none';
+      }
+    }
+
+    function confirmAddBrowser() {
+      const select = document.getElementById('browser-select');
+      let name = '';
+      let process = '';
+      let icon = '🌐';
+      
+      if (select.value === 'custom') {
+        name = document.getElementById('custom-browser-name').value.trim();
+        process = document.getElementById('custom-browser-process').value.trim().toLowerCase();
+      } else {
+        const cleanNames = {
+          'chrome': 'Google Chrome',
+          'msedge': 'Microsoft Edge',
+          'whale': 'Naver Whale',
+          'firefox': 'Mozilla Firefox',
+          'opera': 'Opera',
+          'brave': 'Brave Browser',
+          'vivaldi': 'Vivaldi'
+        };
+        const icons = {
+          'chrome': '🌐', 'msedge': '🌐', 'whale': '🐳', 'firefox': '🦊', 'opera': '🌐', 'brave': '🌐', 'safari': '🌐', 'vivaldi': '🌐'
+        };
+        process = select.value;
+        name = cleanNames[process];
+        icon = icons[process] || '🌐';
+      }
+      
+      if (!name || !process) {
+        alert('브라우저 정보를 올바르게 입력해 주세요.');
+        return;
+      }
+      
+      if (browserStopwatches.some(sw => sw.process.toLowerCase() === process)) {
+        alert('이미 등록된 브라우저 프로세스입니다.');
+        return;
+      }
+      
+      browserStopwatches.push({
+        name: name,
+        process: process,
+        elapsedSecs: 0,
+        isRunning: false,
+        icon: icon
+      });
+      
+      updateUI();
+      hideAddBrowserModal();
+    }
+
+    // ── Drag and Drop Handlers ──
+    function onDragOver(e) {
+      e.preventDefault();
+      const zone = document.getElementById('browser-drop-zone');
+      if (zone) zone.classList.add('dragover');
+    }
+
+    function onDragLeave(e) {
+      e.preventDefault();
+      const zone = document.getElementById('browser-drop-zone');
+      if (zone) zone.classList.remove('dragover');
+    }
+
+    function onDrop(e) {
+      e.preventDefault();
+      const zone = document.getElementById('browser-drop-zone');
+      if (zone) zone.classList.remove('dragover');
+
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        let addedCount = 0;
+        let dupCount = 0;
+        
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const rawName = file.name;
+          const baseName = rawName.replace(/\.(lnk|exe|url|desktop)$/i, '').trim();
+          const lowerBase = baseName.toLowerCase();
+          
+          let name = '';
+          let process = '';
+          let icon = '🌐';
+          
+          if (lowerBase.includes('chrome')) {
+            name = 'Google Chrome';
+            process = 'chrome';
+            icon = '🌐';
+          } else if (lowerBase.includes('edge')) {
+            name = 'Microsoft Edge';
+            process = 'msedge';
+            icon = '🌐';
+          } else if (lowerBase.includes('whale') || lowerBase.includes('웨일')) {
+            name = 'Naver Whale';
+            process = 'whale';
+            icon = '🐳';
+          } else if (lowerBase.includes('firefox') || lowerBase.includes('파이어폭스')) {
+            name = 'Mozilla Firefox';
+            process = 'firefox';
+            icon = '🦊';
+          } else if (lowerBase.includes('opera') || lowerBase.includes('오페라')) {
+            name = 'Opera';
+            process = 'opera';
+            icon = '🌐';
+          } else if (lowerBase.includes('brave') || lowerBase.includes('브레이브')) {
+            name = 'Brave Browser';
+            process = 'brave';
+            icon = '🌐';
+          } else if (lowerBase.includes('vivaldi') || lowerBase.includes('비발디')) {
+            name = 'Vivaldi';
+            process = 'vivaldi';
+            icon = '🌐';
+          } else {
+            name = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+            process = lowerBase;
+            icon = '🌐';
+          }
+          
+          if (browserStopwatches.some(sw => sw.process.toLowerCase() === process)) {
+            dupCount++;
+            continue;
+          }
+          
+          browserStopwatches.push({
+            name: name,
+            process: process,
+            elapsedSecs: 0,
+            isRunning: false,
+            icon: icon
+          });
+          addedCount++;
+        }
+        
+        if (addedCount > 0) {
+          updateUI();
+          alert(`${addedCount}개의 브라우저가 성공적으로 등록되었습니다.`);
+        } else if (dupCount > 0) {
+          alert('이미 등록된 브라우저입니다.');
+        } else {
+          alert('올바른 브라우저 아이콘 파일이 아닙니다.');
+        }
+      }
+    }
+
+    function clearAllBrowsers() {
+      if (confirm('등록된 모든 브라우저를 삭제하시겠습니까?')) {
+        browserStopwatches = [];
+        updateUI();
+      }
+    }
+
+    // ── Settings & Restrictions ──────────────────────────────────
+    function updateSettingsUI() {
+      const notiToggle = document.getElementById('noti-toggle');
+      const notiStatus = document.getElementById('noti-status');
+      if(notiToggle && notiStatus) {
+        if (appState.settings.notifications) {
+          notiToggle.classList.remove('off');
+          notiStatus.textContent = '켜짐';
+        } else {
+          notiToggle.classList.add('off');
+          notiStatus.textContent = '꺼짐';
+        }
+      }
+
+
+    }
+
+    function toggleNotifications() {
+      appState.settings.notifications = !appState.settings.notifications;
+      updateSettingsUI();
+      saveStateToStorage();
+    }
+
+
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", "digital_detox_backup.json");
+      document.body.appendChild(downloadAnchorNode);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+      if(appState.settings.notifications) alert("데이터가 백업되었습니다.");
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const contents = e.target.result;
+          const parsed = JSON.parse(contents);
+          if(parsed && parsed.apps && parsed.history) {
+            localStorage.setItem(STORAGE_KEY, contents);
+            if(appState.settings.notifications) alert("데이터 복원이 완료되었습니다. 앱을 새로고침합니다.");
+            location.reload();
+          } else {
+            if(appState.settings.notifications) alert("올바른 백업 파일이 아닙니다.");
+          }
+        } catch (err) {
+          if(appState.settings.notifications) alert("파일을 읽는 중 오류가 발생했습니다.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function checkRestrictions() {
+      let restricted = false;
+      let restrictionMessage = "";
+      
+
+      
+      // 2. Blocked Apps
+      if (!restricted && pcTrackerConnected && lastActivePcApp) {
+        const lowerName = lastActivePcApp.toLowerCase();
+        if (appState.blockedApps.includes(lowerName)) {
+          restricted = true;
+          restrictionMessage = "차단된 앱입니다.";
+        }
+      }
+
+      // 3. App Limits
+      if (!restricted && pcTrackerConnected && lastActivePcApp) {
+        const app = appState.apps.find(a => a.name.toLowerCase() === lastActivePcApp.toLowerCase());
+        if (app && appState.appLimits[app.name.toLowerCase()]) {
+          const limitMins = appState.appLimits[app.name.toLowerCase()];
+          const usedMins = (app.mins || 0) + ((app.secs || 0) > 0 ? 1 : 0);
+          if (usedMins >= limitMins) {
+            restricted = true;
+            restrictionMessage = `일일 사용 제한 시간(${limitMins}분)을 초과했습니다.`;
+          }
+        }
+      }
+
+      const overlay = document.getElementById('restriction-overlay');
+      if (overlay) {
+        if (restricted) {
+          overlay.style.display = 'flex';
+          document.getElementById('restriction-desc').innerText = restrictionMessage;
+        } else {
+          overlay.style.display = 'none';
+        }
+      }
+    }
+
+    function closeModal(e, id) {
+      if (e.target.id === id) document.getElementById(id).style.display = 'none';
+    }
+
+    function openLimitsModal() {
+      document.getElementById('limits-modal').style.display = 'flex';
+    }
+    function saveAppLimit() {
+      const name = document.getElementById('limit-app-name').value.trim().toLowerCase();
+      const mins = parseInt(document.getElementById('limit-mins-input').value, 10);
+      if(name && !isNaN(mins)) {
+        appState.appLimits[name] = mins;
+        saveStateToStorage();
+        if(appState.settings.notifications) alert(`[${name}] 앱이 ${mins}분으로 제한되었습니다.`);
+      }
+      document.getElementById('limits-modal').style.display = 'none';
+    }
+
+    function openBlockedModal() {
+      document.getElementById('blocked-modal').style.display = 'flex';
+    }
+    function saveBlockedApp() {
+      const name = document.getElementById('blocked-app-name').value.trim().toLowerCase();
+      if(name && !appState.blockedApps.includes(name)) {
+        appState.blockedApps.push(name);
+        saveStateToStorage();
+        if(appState.settings.notifications) alert(`[${name}] 앱이 차단되었습니다.`);
+      }
+      document.getElementById('blocked-modal').style.display = 'none';
+    }
+
+    // 전역 드래그 앤 드롭 이벤트 처리 (화면 밖으로 튕기는 현상 방지)
+    window.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      onDragOver(e);
+    });
+    window.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      onDragLeave(e);
+    });
+    window.addEventListener('drop', function(e) {
+      e.preventDefault();
+      onDrop(e);
+    });
+    
+    function toggleChallenge(btn) {
+      if (!appState.challengeActive) {
+        appState.challengeActive = true;
+        btn.textContent = '진행 중...';
+        btn.style.background = '#e0daf2';
+        btn.style.color = '#5a4f8f';
+        btn.parentElement.querySelector('.label').textContent = '도전 진행 중';
+        if(appState.settings.notifications) alert("오늘 하루 3시간 미만 챌린지를 시작합니다!");
+      } else {
+        appState.challengeActive = false;
+        btn.textContent = '도전하기';
+        btn.style.background = '#e8698a';
+        btn.style.color = 'white';
+        btn.parentElement.querySelector('.label').textContent = '챌린지 시작';
+      }
+      saveStateToStorage();
+    }
+    
+    // UI 초기화
+    setTimeout(() => {
+      updateSettingsUI();
+      if(appState.challengeActive) {
+        const btn = document.querySelector('.challenge-btn');
+        if(btn) {
+          btn.textContent = '진행 중...';
+          btn.style.background = '#e0daf2';
+          btn.style.color = '#5a4f8f';
+          btn.parentElement.querySelector('.label').textContent = '도전 진행 중';
+        }
+      }
+    }, 100);
   </script>
+
+  <!-- ADD BROWSER MODAL -->
+  <div class="web-modal-overlay" id="add-browser-modal" style="display: none;" onclick="closeAddBrowserModal(event)">
+    <div class="web-modal" onclick="event.stopPropagation()">
+      <div class="web-modal-title">브라우저 등록</div>
+      <div class="web-modal-desc">집계할 바탕화면 브라우저를 등록해 주세요.</div>
+      
+      <div class="web-modal-field">
+        <label for="browser-select">브라우저 선택</label>
+        <select id="browser-select" style="border: 1.5px solid #e0daf2; border-radius: 10px; padding: 8px 12px; font-size: 13px; outline: none; width: 100%; transition: border-color 0.2s;" onchange="onBrowserSelectChange(this)">
+          <option value="chrome">Google Chrome</option>
+          <option value="msedge">Microsoft Edge</option>
+          <option value="whale">Naver Whale</option>
+          <option value="firefox">Mozilla Firefox</option>
+          <option value="opera">Opera</option>
+          <option value="brave">Brave Browser</option>
+          <option value="vivaldi">Vivaldi</option>
+          <option value="custom">직접 입력 (프로세스명)</option>
+        </select>
+      </div>
+
+      <div class="web-modal-field" id="custom-browser-field" style="display: none;">
+        <label for="custom-browser-name">브라우저 이름</label>
+        <input type="text" id="custom-browser-name" placeholder="예: Whale" style="border: 1.5px solid #e0daf2; border-radius: 10px; padding: 8px 12px; font-size: 13px; outline: none;"/>
+        <label for="custom-browser-process" style="margin-top: 6px;">프로세스명 (.exe 제외)</label>
+        <input type="text" id="custom-browser-process" placeholder="예: whale" style="border: 1.5px solid #e0daf2; border-radius: 10px; padding: 8px 12px; font-size: 13px; outline: none;"/>
+      </div>
+      
+      <div class="web-modal-actions">
+        <button class="web-modal-btn cancel" onclick="hideAddBrowserModal()">취소</button>
+        <button class="web-modal-btn confirm" onclick="confirmAddBrowser()">등록</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP LIMITS MODAL -->
+  <div class="web-modal-overlay" id="limits-modal" style="display: none;" onclick="closeModal(event, 'limits-modal')">
+    <div class="web-modal" onclick="event.stopPropagation()">
+      <div class="web-modal-title">앱 시간 제한 관리</div>
+      <div class="web-modal-desc">앱별 하루 최대 사용 시간을 설정하세요.</div>
+      <div class="web-modal-field">
+        <label>앱 이름</label>
+        <input type="text" id="limit-app-name" placeholder="예: youtube" style="border: 1.5px solid #e0daf2; border-radius: 10px; padding: 8px 12px; font-size: 13px; outline: none; width: 100%; margin-bottom: 6px;"/>
+        <label>제한 시간 (분)</label>
+        <input type="number" id="limit-mins-input" placeholder="예: 30" style="border: 1.5px solid #e0daf2; border-radius: 10px; padding: 8px 12px; font-size: 13px; outline: none; width: 100%;"/>
+      </div>
+      <div class="web-modal-actions">
+        <button class="web-modal-btn cancel" onclick="document.getElementById('limits-modal').style.display='none'">취소</button>
+        <button class="web-modal-btn confirm" onclick="saveAppLimit()">설정</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCKED APPS MODAL -->
+  <div class="web-modal-overlay" id="blocked-modal" style="display: none;" onclick="closeModal(event, 'blocked-modal')">
+    <div class="web-modal" onclick="event.stopPropagation()">
+      <div class="web-modal-title">차단할 앱 등록</div>
+      <div class="web-modal-desc">완전히 차단할 앱의 이름을 입력하세요.</div>
+      <div class="web-modal-field">
+        <label>앱 이름</label>
+        <input type="text" id="blocked-app-name" placeholder="예: league of legends" style="border: 1.5px solid #e0daf2; border-radius: 10px; padding: 8px 12px; font-size: 13px; outline: none; width: 100%;"/>
+      </div>
+      <div class="web-modal-actions">
+        <button class="web-modal-btn cancel" onclick="document.getElementById('blocked-modal').style.display='none'">취소</button>
+        <button class="web-modal-btn confirm" onclick="saveBlockedApp()">차단</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESTRICTION OVERLAY -->
+  <div id="restriction-overlay" style="display: none; position: fixed; inset: 0; background: rgba(232, 105, 138, 0.95); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px;">
+    <div style="font-size: 56px; margin-bottom: 20px;">🚫</div>
+    <div style="font-size: 26px; font-weight: bold; margin-bottom: 12px;" id="restriction-title">이용이 제한되었습니다</div>
+    <div style="font-size: 15px; opacity: 0.9; line-height: 1.5; white-space: pre-wrap;" id="restriction-desc">설정된 조건에 의해 앱 사용이 일시적으로 차단되었습니다.</div>
+  </div>
+
 </body>
 
 </html>
